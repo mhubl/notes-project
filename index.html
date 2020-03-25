@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Notes</title>
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+    <link rel="stylesheet" href="/styles/main.css">
+    <script src="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css"/>
+</head>
+<body>
+<div class="user-data" id="user-data">
+    <div class="user-picture"></div>
+    <div class="user-name"></div>
+</div>
+<button data-modal-target="#firebaseui-auth-container" id="sign-in">Sign in</button>
+<button hidden id="sign-out">Sign out</button>
+<button data-modal-target="#sign-up-modal" id="sign-up">Sign up</button>
+<button hidden data-modal-target="#note-creator-modal" id="open-note-creator-btn">New note</button>
+
+<div class="modal note-creator" id="note-creator-modal">
+    <div class="note-creator-header">
+        <div class="title">Add a new note</div>
+        <button data-close-button class="close-note-creator-btn">&times;</button>
+    </div>
+    <div class="note-creator-note-title">
+        <input class="note-creator-title-input" id="note-creator-title-input" type="text" placeholder="Your title"
+               required>
+    </div>
+    <div class="note-creator-note-content">
+        <textarea class="note-creator-content-input" id="note-creator-content-input" placeholder="Your note"
+                  required></textarea>
+    </div>
+    <div class="note-creator-footer">
+        <div class="note-creator-char-limit">x/yyyy characters</div>
+        <button class="note-creator-upload-btn">Upload</button>
+        <button class="note-creator-confirm-btn" id="note-creator-confirm-btn">Add</button>
+    </div>
+</div>
+<div class="modal" id="firebaseui-auth-container"></div>
+<div class="modal" id="sign-up-modal"></div>
+
+<div id="overlay"></div>
+
+<div hidden id="note-template">
+    <div class="note-header"></div>
+    <div class="note-body"></div>
+    <div class="note-footer"></div>
+</div>
+<div class="wrapper" id="note-wrapper"></div>
+
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="/__/firebase/7.12.0/firebase-app.js"></script>
+
+<script src="/__/firebase/7.12.0/firebase-analytics.js"></script>
+<script src="/__/firebase/7.12.0/firebase-auth.js"></script>
+<script src="/__/firebase/7.12.0/firebase-firestore.js"></script>
+
+<!-- Initialize Firebase -->
+<script src="/__/firebase/init.js"></script>
+<script src="scripts/main.js"></script>
+</body>
+</html>
