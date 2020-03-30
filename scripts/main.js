@@ -15,8 +15,7 @@ const authElements = [
     document.getElementById('open-note-creator-btn')
 ];
 const unauthElements = [
-    document.getElementById('sign-in'),
-    document.getElementById('sign-up')
+    document.getElementById('sign-in')
 ];
 
 ui.start('#firebaseui-auth-container', {

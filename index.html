@@ -1,64 +1,168 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE HTML>
+<html lang="pl">
 <head>
-    <meta charset="UTF-8">
-    <title>Notes</title>
-    <link rel="stylesheet"
-          href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+	<meta charset="utf-8" />
+	<title>Memo Lite</title>
+	<meta name="description" content="Memo lite notepad application" />
+	<meta name="keywords" content="memo, lite, notepad" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<link href="https://fonts.googleapis.com/css?family=Josefin+Sans|Lato|Roboto&display=swap&subset=latin-ext" rel="stylesheet">
     <link rel="stylesheet" href="/styles/main.css">
     <script src="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.js"></script>
     <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css"/>
 </head>
 <body>
-<div class="user-data" id="user-data">
-    <div class="user-picture"></div>
-    <div class="user-name"></div>
-</div>
-<button data-modal-target="#firebaseui-auth-container" id="sign-in">Sign in</button>
-<button hidden id="sign-out">Sign out</button>
-<button data-modal-target="#sign-up-modal" id="sign-up">Sign up</button>
-<button hidden data-modal-target="#note-creator-modal" id="open-note-creator-btn">New note</button>
+	<nav class="navbar">
+		<ul class="navbar-nav">
+		
+			<li class="logo">
+				<a href="#" class="nav-link">
+					<span class="link-text logo-text">Memo Lite</span>
+					<svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="angle-double-right" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="svg-inline--fa fa-angle-double-right fa-w-14 fa-5x">
+						<path 
+							fill="currentColor" 
+							d="M312 320h136V56c0-13.3-10.7-24-24-24H24C10.7 32 0 42.7 0 56v400c0 13.3 10.7 24 24 24h264V344c0-13.2 10.8-24 24-24zm129 55l-98 98c-4.5 4.5-10.6 7-17 7h-6V352h128v6.1c0 6.3-2.5 12.4-7 16.9z" 
+							class="fa-primary">
+						</path>
+					</svg>
+				</a>
+			</li>
+			
+			<li class="nav-item" data-modal-target="#firebaseui-auth-container" id="sign-in">
+				<a href="#" class="nav-link">
+				    <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="sign-in-alt" class="svg-inline--fa fa-sign-in-alt fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+						<path 
+							fill="currentColor" 
+							d="M416 448h-84c-6.6 0-12-5.4-12-12v-40c0-6.6 5.4-12 12-12h84c17.7 0 32-14.3 32-32V160c0-17.7-14.3-32-32-32h-84c-6.6 0-12-5.4-12-12V76c0-6.6 5.4-12 12-12h84c53 0 96 43 96 96v192c0 53-43 96-96 96zm-47-201L201 79c-15-15-41-4.5-41 17v96H24c-13.3 0-24 10.7-24 24v96c0 13.3 10.7 24 24 24h136v96c0 21.5 26 32 41 17l168-168c9.3-9.4 9.3-24.6 0-34z"
+							class="fa-primary">
+						</path>
+					</svg>
+				    <span class="link-text">Sign&nbsp;in</span>
+				</a>
+			</li>
+			<li hidden class="nav-item" id="sign-out">
+				<a href="#" class="nav-link">
+				    <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="sign-out-alt" class="svg-inline--fa fa-sign-out-alt fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+						<path 
+							fill="currentColor" 
+							d="M497 273L329 441c-15 15-41 4.5-41-17v-96H152c-13.3 0-24-10.7-24-24v-96c0-13.3 10.7-24 24-24h136V88c0-21.4 25.9-32 41-17l168 168c9.3 9.4 9.3 24.6 0 34zM192 436v-40c0-6.6-5.4-12-12-12H96c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32h84c6.6 0 12-5.4 12-12V76c0-6.6-5.4-12-12-12H96c-53 0-96 43-96 96v192c0 53 43 96 96 96h84c6.6 0 12-5.4 12-12z"
+							class="fa-primary">
+						</path>
+					</svg>
+				    <span class="link-text">Sign&nbsp;out</span>
+				</a>
+			</li>
+			<li hidden data-modal-target="#note-creator-modal" id="open-note-creator-btn" class="nav-item">
+				<a href="#" class="nav-link">
+				    <svg aria-hidden="true" focusable="false" data-prefix="far" data-icon="plus-square" class="svg-inline--fa fa-plus-square fa-w-14" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+						<path 
+							fill="currentColor" 
+							d="M352 240v32c0 6.6-5.4 12-12 12h-88v88c0 6.6-5.4 12-12 12h-32c-6.6 0-12-5.4-12-12v-88h-88c-6.6 0-12-5.4-12-12v-32c0-6.6 5.4-12 12-12h88v-88c0-6.6 5.4-12 12-12h32c6.6 0 12 5.4 12 12v88h88c6.6 0 12 5.4 12 12zm96-160v352c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V80c0-26.5 21.5-48 48-48h352c26.5 0 48 21.5 48 48zm-48 346V86c0-3.3-2.7-6-6-6H54c-3.3 0-6 2.7-6 6v340c0 3.3 2.7 6 6 6h340c3.3 0 6-2.7 6-6z"
+							class="fa-primary">
+						</path>
+					</svg>
+				    <span class="link-text">New&nbsp;note</span>
+				</a>
+			</li>
+			
+			
+			
+			
+			
+			<!-- dupa element listy do latwego powielania-->
+			<li class="nav-item">
+				<a href="#" class="nav-link">
+				    <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="poo" class="svg-inline--fa fa-poo fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+						<path 
+							fill="currentColor" 
+							d="M451.4 369.1C468.7 356 480 335.4 480 312c0-39.8-32.2-72-72-72h-14.1c13.4-11.7 22.1-28.8 22.1-48 0-35.3-28.7-64-64-64h-5.9c3.6-10.1 5.9-20.7 5.9-32 0-53-43-96-96-96-5.2 0-10.2.7-15.1 1.5C250.3 14.6 256 30.6 256 48c0 44.2-35.8 80-80 80h-16c-35.3 0-64 28.7-64 64 0 19.2 8.7 36.3 22.1 48H104c-39.8 0-72 32.2-72 72 0 23.4 11.3 44 28.6 57.1C26.3 374.6 0 404.1 0 440c0 39.8 32.2 72 72 72h368c39.8 0 72-32.2 72-72 0-35.9-26.3-65.4-60.6-70.9zM192 256c17.7 0 32 14.3 32 32s-14.3 32-32 32-32-14.3-32-32 14.3-32 32-32zm159.5 139C341 422.9 293 448 256 448s-85-25.1-95.5-53c-2-5.3 2-11 7.8-11h175.4c5.8 0 9.8 5.7 7.8 11zM320 320c-17.7 0-32-14.3-32-32s14.3-32 32-32 32 14.3 32 32-14.3 32-32 32z"
+							class="fa-secondary">
+						</path>
+					</svg>
+				    <span class="link-text">xD</span>
+				</a
+			</li>
 
-<div class="modal note-creator" id="note-creator-modal">
-    <div class="note-creator-header">
-        <div class="title">Add a new note</div>
-        <button data-close-button class="close-note-creator-btn">&times;</button>
-    </div>
-    <div class="note-creator-note-title">
-        <input class="note-creator-title-input" id="note-creator-title-input" type="text" placeholder="Your title"
-               required>
-    </div>
-    <div class="note-creator-note-content">
-        <textarea class="note-creator-content-input" id="note-creator-content-input" placeholder="Your note"
-                  required></textarea>
-    </div>
-    <div class="note-creator-footer">
-        <div class="note-creator-char-limit">x/yyyy characters</div>
-        <button class="note-creator-upload-btn">Upload</button>
-        <button class="note-creator-confirm-btn" id="note-creator-confirm-btn">Add</button>
-    </div>
-</div>
-<div class="modal" id="firebaseui-auth-container"></div>
-<div class="modal" id="sign-up-modal"></div>
+			  
+		</ul>
+	</nav>
 
-<div id="overlay"></div>
+	<main>
+		<!-- dupa sprawdzic co to moze zwracac -->
+		<div class="user-data" id="user-data">
+			<div class="user-picture"></div>
+			<div class="user-name"></div>
+		</div>
+		
+	
+		<!-- dupa tworzenie notatki do ostylowania -->
+		<div class="modal note-creator" id="note-creator-modal">
+			<div class="note-creator-header">
+				<div class="title">Add a new note</div>
+				<button data-close-button class="close-note-creator-btn">&times;</button>
+			</div>
+			<div class="note-creator-note-title">
+				<input class="note-creator-title-input" id="note-creator-title-input" type="text" placeholder="Your title"
+					   required>
+			</div>
+			<div class="note-creator-note-content">
+				<textarea class="note-creator-content-input" id="note-creator-content-input" placeholder="Your note"
+						  required></textarea>
+			</div>
+			<div class="note-creator-footer">
+				<div class="note-creator-char-limit">x/yyyy characters</div>
+				<button class="note-creator-upload-btn">Upload</button>
+				<button class="note-creator-confirm-btn" id="note-creator-confirm-btn">Add</button>
+			</div>
+		</div>
+		<div class="modal" id="firebaseui-auth-container"></div>
+		<div class="modal" id="sign-up-modal"></div>
 
-<div hidden id="note-template">
-    <div class="note-header"></div>
-    <div class="note-body"></div>
-    <div class="note-footer"></div>
-</div>
-<div class="wrapper" id="note-wrapper"></div>
+		<div id="overlay"></div>
+		
+		<!-- NOTES PRINTING -->
+		<div hidden id="note-template">
+		
+				<div class="note-header"></div>
+				<svg id="pin" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="map-pin" class="svg-inline--fa fa-map-pin fa-w-9" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 288 512">
+					<path 
+						fill="currentColor" 
+						d="M112 316.94v156.69l22.02 33.02c4.75 7.12 15.22 7.12 19.97 0L176 473.63V316.94c-10.39 1.92-21.06 3.06-32 3.06s-21.61-1.14-32-3.06zM144 0C64.47 0 0 64.47 0 144s64.47 144 144 144 144-64.47 144-144S223.53 0 144 0zm0 76c-37.5 0-68 30.5-68 68 0 6.62-5.38 12-12 12s-12-5.38-12-12c0-50.73 41.28-92 92-92 6.62 0 12 5.38 12 12s-5.38 12-12 12z"
+						color="#1a237e">
+					</path>
+				</svg>
+				<hr>
+				<div class="note-body"></div>
+				<div class="note-footer"></div>
+			
+		</div>
+		<div id="note-wrapper"></div>
 
-<!-- The core Firebase JS SDK is always required and must be listed first -->
-<script src="/__/firebase/7.12.0/firebase-app.js"></script>
 
-<script src="/__/firebase/7.12.0/firebase-analytics.js"></script>
-<script src="/__/firebase/7.12.0/firebase-auth.js"></script>
-<script src="/__/firebase/7.12.0/firebase-firestore.js"></script>
 
-<!-- Initialize Firebase -->
-<script src="/__/firebase/init.js"></script>
-<script src="scripts/main.js"></script>
+		<!-- The core Firebase JS SDK is always required and must be listed first -->
+		<script src="/__/firebase/7.12.0/firebase-app.js"></script>
+		<script src="/__/firebase/7.12.0/firebase-analytics.js"></script>
+		<script src="/__/firebase/7.12.0/firebase-auth.js"></script>
+		<script src="/__/firebase/7.12.0/firebase-firestore.js"></script>
+
+
+
+		<!-- Initialize Firebase -->
+		<script src="/__/firebase/init.js"></script>
+		<script src="scripts/main.js"></script>
+	</main>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,9 +1,182 @@
-html, body {
-    font-family: 'Roboto', 'Helvetica', sans-serif;
-    margin: 0px;
-    padding: 0px;
-    background-color: #eee;
+body {
+	background-color: #e8eaf6;
+	margin: 0;
+	padding: 0;
+	font-family: 'Lato', sans-serif;
+	color: #000000;
 }
+
+::-webkit-scrollbar { 
+    display: none; 
+}
+
+
+:root {
+  font-size: 16px;
+  font-family: 'Open Sans';
+  --text-primary: #b6b6b6;
+  --text-secondary: #ececec;
+  --bg-primary: #1a237e;
+  --bg-secondary: #000051;
+  --transition-speed: 600ms;
+}
+
+main {
+  margin-left: 5rem;
+  padding: 1rem;
+}
+
+/*--------------NAV-BAR--------------*/
+.navbar {
+  position: fixed;
+  background-color: var(--bg-primary);
+  transition: width 600ms ease;
+  overflow: hidden;
+}
+
+.navbar-nav {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+}
+
+.nav-item {
+  width: 100%;
+}
+
+.nav-item:last-child {
+  margin-top: auto;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  height: 5rem;
+  color: var(--text-primary);
+  text-decoration: none;
+  filter: grayscale(100%) opacity(0.7);
+  transition: var(--transition-speed);
+}
+
+.nav-link:hover {
+  filter: grayscale(0%) opacity(1);
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+}
+
+.link-text {
+  display: none;
+  margin-left: 1rem;
+}
+
+.nav-link svg {
+  width: 2rem;
+  min-width: 2rem;
+  margin: 0 1.5rem;
+}
+
+.fa-primary {
+  color: #03A9F4;
+  transition: var(--transition-speed);
+}
+
+.fa-secondary {
+  color: #795548;
+  transition: var(--transition-speed);
+}
+
+.logo {
+  font-weight: bold;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  text-align: center;
+  color: var(--text-secondary);
+  background: var(--bg-secondary);
+  font-size: 1.5rem;
+  letter-spacing: 0.2ch;
+  width: 100%;
+}
+
+.logo svg {
+  transform: rotate(0deg);
+  transition: var(--transition-speed);
+}
+
+.logo-text
+{
+  display: inline;
+  position: absolute;
+  left: -999px;
+  transition: var(--transition-speed);
+}
+
+.navbar:hover .logo svg {
+  transform: rotate(-225deg);
+}
+
+/* Small screens */
+@media only screen and (max-width: 600px) {
+  .navbar {
+    bottom: 0;
+    width: 100vw;
+    height: 5rem;
+  }
+
+  .logo {
+    display: none;
+  }
+
+  .navbar-nav {
+    flex-direction: row;
+  }
+
+  .nav-link {
+    justify-content: center;
+  }
+
+  main {
+    margin: 0;
+  }
+}
+
+/* Large screens */
+@media only screen and (min-width: 600px) {
+  .navbar {
+    top: 0;
+    width: 5rem;
+    height: 100vh;
+  }
+
+  .navbar:hover {
+    width: 15rem;
+  }
+
+  .navbar:hover .link-text {
+    display: inline;
+	font-size: 1rem;
+  }
+  
+
+  .navbar:hover .logo svg
+  {
+    margin-left: 11rem;
+  }
+
+  .navbar:hover .logo-text
+  {
+    left: 0px;
+  }
+}
+/*-----------------------------------*/
+
+
+
+
+
 
 .modal {
     background-color: inherit;
@@ -119,37 +292,60 @@ html, body {
     display: flex;
 }
 
-.wrapper {
-    width: 1000px;
-    max-width: 90%;
-    border: 1px solid grey;
-    position: absolute;
-    border-radius: 5px;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -75%);
-    display: grid;
-    grid-gap: 5px;
+
+
+/*--------------NOTES--------------*/
+
+#note-wrapper {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(600px, 1fr));
 }
 
 .note {
-    word-wrap: anywhere;
-    display: grid;
-    grid-gap: 10px;
-    border-top: 1px solid grey;
-    border-radius: 5px;
-    min-height: 125px;
+	margin: 1vh 1vw;
+	background-color: #FFFFFF;
+	border-radius: 1vmin;
+	padding: 4%;
+	box-shadow: 5px 5px 15px #888888;
+	text-align: justify;
 }
 
 .note-header {
-    background-color: white;
-    height: 40px;
-    line-height: 40px;
-    padding: 0px 15px;
-    font-size: 1.75rem;
-    border-radius: 5px;
+	float: left;
+	font-family: 'Roboto', sans-serif;
+	font-size: 3vh;
+	width: 93%;
+	overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
 }
 
-.note-body, .note-footer {
+.note-body {
+	font-size: 2vh;
+	overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 10;
+}
+
+.note-footer {
     padding: 0px 15px;
 }
+
+hr {
+	clear: both;
+	border: 2px solid var(--bg-primary);
+	border-radius: 2px;
+}
+
+#pin {
+	height: 3vh;
+	width: 3vh;
+	float: right;
+	z-index: 100;
+	
+}
+/*---------------------------------*/
