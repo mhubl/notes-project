@@ -73,7 +73,7 @@ auth.onAuthStateChanged(function (user) {
         currentUserRef = null;
     }
     try {
-        db.collection('notes').where('author', '==', 'users/' + currentUser.uid) // TODO: fix references?
+        db.collection('notes').where('author', '==', currentUserRef)
             .onSnapshot(function (querySnapshot) {
                 querySnapshot.forEach(doc => {
                     renderNote(doc);
@@ -101,7 +101,19 @@ function renderNote(note) {
     body = noteDiv.querySelector('.note-body');
     body.textContent = note.text;
     footer = noteDiv.querySelector('.note-footer');
-    footer.textContent = note.author;
+    note.author.get().then(
+        result => { // TODO: Najlepiej dwa oddzielne divy na date i autora - inny styl, Bez "created by" itp
+            var date = new Date(note.created.seconds * 1000).toLocaleString();
+            footer.textContent = "Created by " + result.data().name + " on " + date;
+        },
+        error => {
+            var date = new Date(note.created.seconds * 1000).toLocaleString();
+            footer.textContent = date;
+            console.log(error);
+        }
+    );
+    var date = new Date(note.created.seconds * 1000);
+    footer.textContent += "\t\t" + date.toUTCString();
 }
 
 function layoutAuthenticated() {
@@ -139,7 +151,7 @@ function displayUserData() {
     }
 }
 
-addNoteConfirm.addEventListener('click', () => {
+addNoteConfirm.addEventListener('click', () => { // TODO: move this to adding note callback
     if (addNote()) {
         var modal = addNoteConfirm.closest('#note-creator-modal');
         closeModal(modal);
@@ -155,8 +167,7 @@ function addNote() {
     if (!currentUser) return false;
 
     return firebase.firestore().collection('notes').add({
-        // author: currentUserRef,
-        author: 'users/' + currentUser.uid, // TODO: fix references?
+        author: currentUserRef,
         title: noteTitle.value,
         text: noteText.value,
         created: firebase.firestore.Timestamp.now()
@@ -166,6 +177,7 @@ function addNote() {
         console.log('Successfully added the note to the database');
     }).catch(function (error) {
         console.error('Error writing new note to database', error);
+        return false;
     });
 }
 
