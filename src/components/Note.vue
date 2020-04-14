@@ -7,20 +7,20 @@
 </template>
 
 <script>
-  export default {
-    name: 'note',
-    data: function () {
-      return {
-        // id: '',
-        // title: ''
-        // text: '',
-        // files: null,
-        // author: '',
-        // created: ''
-      }
-    },
-    props: ['id', 'title', 'text', 'author', 'created']
-  }
+export default {
+  name: 'note',
+  data: function () {
+    return {
+      // id: '',
+      // title: ''
+      // text: '',
+      // files: null,
+      // author: '',
+      // created: ''
+    }
+  },
+  props: ['id', 'title', 'text', 'author', 'created']
+}
 </script>
 
 <style scoped>

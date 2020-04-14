@@ -6,7 +6,7 @@ import * as firebase from 'firebase/app'
 import 'firebase/auth'
 import 'firebase/firestore'
 
-Vue.config.productionTip = false;
+Vue.config.productionTip = false
 
 const unsubscribe = firebase.auth()
   .onAuthStateChanged((firebaseUser) => {
@@ -16,11 +16,11 @@ const unsubscribe = firebase.auth()
       router,
       store,
       render: h => h(App),
-      created() {
+      created () {
         if (firebaseUser) {
           store.dispatch('autoSignIn', firebaseUser)
         }
       }
-    });
+    })
     unsubscribe()
-  });
+  })

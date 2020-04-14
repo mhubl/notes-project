@@ -21,35 +21,35 @@
      Jakbym mial rzucic jakims przykladem to przychodzi mi do glowy uklad plikow w google drive -->
 
 <script>
-  import note from '../components/Note.vue'
-  // import * as firebase from 'firebase/app'
-  // import 'firebase/firestore'
-  // import 'firebase/auth'
+import note from '../components/Note.vue'
+// import * as firebase from 'firebase/app'
+// import 'firebase/firestore'
+// import 'firebase/auth'
 
-  export default {
-    name: 'Notes',
-    components: {note},
-    data: function () {
-      return {
-        dummynotes: [
-          {
-            id: 'AAAAA',
-            title: 'Test title 1',
-            text: 'test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test ',
-            author: 'Test author',
-            created: 'this should be a date'
-          },
-          {
-            id: 'BBBBB',
-            title: 'Test title 2',
-            text: 'short example',
-            author: 'Test author',
-            created: 'this should also be a date'
-          }
-        ]
-      }
+export default {
+  name: 'Notes',
+  components: { note },
+  data: function () {
+    return {
+      dummynotes: [
+        {
+          id: 'AAAAA',
+          title: 'Test title 1',
+          text: 'test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test test ',
+          author: 'Test author',
+          created: 'this should be a date'
+        },
+        {
+          id: 'BBBBB',
+          title: 'Test title 2',
+          text: 'short example',
+          author: 'Test author',
+          created: 'this should also be a date'
+        }
+      ]
     }
   }
+}
 </script>
 
 <style>

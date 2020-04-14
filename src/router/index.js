@@ -8,7 +8,7 @@ import Notes from '../views/Notes.vue'
 import * as firebase from 'firebase/app'
 import 'firebase/auth'
 
-Vue.use(VueRouter);
+Vue.use(VueRouter)
 
 const routes = [
   {
@@ -30,22 +30,22 @@ const routes = [
     path: '/notes',
     name: 'Notes',
     component: Notes,
-    meta: {requiresAuth: true}
+    meta: { requiresAuth: true }
   }
-];
+]
 
 const router = new VueRouter({
   routes
-});
+})
 
 router.beforeEach((to, from, next) => {
-  const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
-  const isAuthenticated = firebase.auth().currentUser;
+  const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
+  const isAuthenticated = firebase.auth().currentUser
   if (requiresAuth && !isAuthenticated) {
     next('/login')
   } else {
     next()
   }
-});
+})
 
 export default router

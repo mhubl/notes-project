@@ -42,7 +42,7 @@ export default {
   },
   methods: {
     signInEmail: function () {
-      this.$store.dispatch('userSignIn', {email: this.email, password: this.password})
+      this.$store.dispatch('userSignIn', { email: this.email, password: this.password })
     }
   }
 }

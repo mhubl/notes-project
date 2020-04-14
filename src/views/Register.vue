@@ -6,15 +6,16 @@
         Have an account?
       </router-link>
     </p>
+    <!-- TODO: Add checks (and warnings) to verify passwords and emails match and satisfy security rules -->
     <form class="auth-form">
       <div class="input-group">
         <input v-model="username" class="auth-input" type="text" placeholder="Username" required>
       </div>
       <div class="input-group">
-        <input v-model="email" class="auth-input" type="text" placeholder="Email" required>
+        <input v-model="email" class="auth-input" type="email" placeholder="Email" required>
       </div>
       <div class="input-group">
-        <input v-model="repeatEmail" class="auth-input" type="text" placeholder="Repeat email" required>
+        <input v-model="repeatEmail" class="auth-input" type="email" placeholder="Repeat email" required>
       </div>
       <div class="input-group">
         <input v-model="password" class="auth-input" type="password" placeholder="Password" required>
@@ -40,6 +41,15 @@ export default {
       repeatEmail: '',
       password: '',
       repeatPassword: ''
+    }
+  },
+  computed: {
+    passwordCheck: this.password === this.repeatPassword,
+    emailCheck: this.email === this.repeatEmail
+  },
+  methods: {
+    userRegister: function () {
+      this.$store.dispatch('userRegister', { username: this.username, email: this.email, password: this.password })
     }
   }
 }
