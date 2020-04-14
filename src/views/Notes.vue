@@ -3,9 +3,9 @@
     <div class="notes-top">
       <h1 class="header-title">Your notes</h1>
     </div>
-    <div class="notes">
+    <div class="notes" v-if="$store.dispatch('updateNotes')">
       <note
-        v-for="note in dummynotes"
+        v-for="note in $store.state.notes"
         v-bind:key="note.id"
         v-bind:title="note.title"
         v-bind:files="note.files"
@@ -21,7 +21,7 @@
      Jakbym mial rzucic jakims przykladem to przychodzi mi do glowy uklad plikow w google drive -->
 
 <script>
-  import note from './Note.vue'
+  import note from '../components/Note.vue'
   // import * as firebase from 'firebase/app'
   // import 'firebase/firestore'
   // import 'firebase/auth'

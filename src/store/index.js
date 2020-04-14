@@ -18,13 +18,14 @@ const firebaseConfig = {
   measurementId: 'G-F1CTS91ZQB'
 };
 firebase.initializeApp(firebaseConfig);
+var db = firebase.firestore();
 
 const store = new Vuex.Store({
   state: {
     appTitle: 'Memo Lite',
     error: null,
     user: null,
-    db: firebase.firestore()
+    notes: []
   },
   mutations: {
     setError(state, payload) {
@@ -36,6 +37,9 @@ const store = new Vuex.Store({
     },
     setDb(state, payload) {
       state.db = payload
+    },
+    setNotes(state, payload) {
+      state.notes = payload
     }
   },
   actions: {
@@ -58,6 +62,23 @@ const store = new Vuex.Store({
         .catch((error) => {
           commit('setError', error)
         })
+    },
+    updateNotes: async function () {
+      const userRef = db.doc('users/' + firebase.auth().currentUser.uid);
+      db.collection('notes').where('author', '==', userRef)
+        .get().then(snapshot => {
+        const notes = [];
+        snapshot.forEach(async function (doc) {
+          const data = doc.data();
+          const note = {};
+          note.id = doc.id;
+          note.title = data.title;
+          note.text = data.text;
+          note.created = new Date(data.created.seconds * 1000).toLocaleString();
+          notes.push(note)
+        });
+        this.commit('setNotes', notes)
+      })
     }
   },
   getters: {

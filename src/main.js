@@ -15,7 +15,6 @@ const unsubscribe = firebase.auth()
       el: '#app',
       router,
       store,
-      // methods: methods,
       render: h => h(App),
       created() {
         if (firebaseUser) {

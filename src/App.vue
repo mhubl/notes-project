@@ -99,7 +99,6 @@
             <span class="link-text">xD</span>
           </router-link>
         </li>
-
       </ul>
     </nav>
     <router-view/>
@@ -107,18 +106,18 @@
 </template>
 
 <script>
-  export default {
-    methods: {
-      signOut: function () {
-        this.$store.dispatch('userSignOut')
-      }
-    },
-    computed: {
-      isAuthenticated: function () {
-        return this.$store.getters.isAuthenticated
-      }
+export default {
+  methods: {
+    signOut: function () {
+      this.$store.dispatch('userSignOut')
+    }
+  },
+  computed: {
+    isAuthenticated: function () {
+      return this.$store.getters.isAuthenticated
     }
   }
+}
 </script>
 
 <style>

@@ -2,7 +2,7 @@
   <div class="note">
     <div class="note-header">{{ title }}</div>
     <div class="note-body">{{ text }}</div>
-    <div class="note-footer">{{ author + ' ' + created }}</div>
+    <div class="note-footer">{{ created }}</div>
   </div>
 </template>
 

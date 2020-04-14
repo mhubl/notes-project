@@ -32,20 +32,20 @@
 </template>
 
 <script>
-  export default {
-    name: 'Login',
-    data: function () {
-      return {
-        email: '',
-        password: ''
-      }
-    },
-    methods: {
-      signInEmail: function () {
-        this.$store.dispatch('userSignIn', {email: this.email, password: this.password})
-      }
+export default {
+  name: 'Login',
+  data: function () {
+    return {
+      email: '',
+      password: ''
+    }
+  },
+  methods: {
+    signInEmail: function () {
+      this.$store.dispatch('userSignIn', {email: this.email, password: this.password})
     }
   }
+}
 </script>
 
 <style scoped>

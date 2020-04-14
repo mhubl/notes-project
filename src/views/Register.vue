@@ -31,18 +31,18 @@
 </template>
 
 <script>
-  export default {
-    name: 'Register',
-    data: function () {
-      return {
-        username: '',
-        email: '',
-        repeatEmail: '',
-        password: '',
-        repeatPassword: ''
-      }
+export default {
+  name: 'Register',
+  data: function () {
+    return {
+      username: '',
+      email: '',
+      repeatEmail: '',
+      password: '',
+      repeatPassword: ''
     }
   }
+}
 </script>
 
 <style scoped>
