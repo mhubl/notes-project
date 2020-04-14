@@ -42,16 +42,16 @@ export default {
       password: '',
       repeatPassword: ''
     }
-  },
-  computed: {
-    passwordCheck: this.password === this.repeatPassword,
-    emailCheck: this.email === this.repeatEmail
-  },
-  methods: {
-    userRegister: function () {
-      this.$store.dispatch('userRegister', { username: this.username, email: this.email, password: this.password })
-    }
   }
+  // computed: {
+  //   // passwordCheck: this.password === this.repeatPassword,
+  //   // emailCheck: this.email === this.repeatEmail
+  // },
+  // methods: {
+  //   // userRegister: function () {
+  //   //   this.$store.dispatch('userRegister', { username: this.username, email: this.email, password: this.password })
+  //   // }
+  // }
 }
 </script>
 
