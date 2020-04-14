@@ -1,6 +1,24 @@
-# Memo Lite
-(nazwa robocza)
+# notes
 
-Celem projektu jest stworzenie aplikacji do przechowywania notatek tekstowych i graficznych. Najważniejszym elementem funkcjonalności jest możliwość współdzielenia treści z innymi użytkownikami. Ta funkcjonalność znacznie poszerza możliwości zastosowania aplikacji w codziennym życiu. Poza własnymi zapiskami możemy również współtworzyć z domownikami listę zakupów, czy w prosty sposób wyznaczyć listę zadań dla współpracowników.
+## Project setup
+```
+npm install
+```
 
-Aplikacja mobilna: https://github.com/patryksitarek/memo_mobile
+### Compiles and hot-reloads for development
+```
+npm run serve
+```
+
+### Compiles and minifies for production
+```
+npm run build
+```
+
+### Lints and fixes files
+```
+npm run lint
+```
+
+### Customize configuration
+See [Configuration Reference](https://cli.vuejs.org/config/).

@@ -1,23 +1,14 @@
 {
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
   "hosting": {
-    "site": "note-sharing-app-name",
-    "public": "./",
+    "public": "dist",
     "ignore": [
       "firebase.json",
-      "database-rules.json",
-      "storage.rules",
-      "functions"
-    ],
-    "headers": [
-      {
-        "source": "**/*.@(js|html)",
-        "headers": [
-          {
-            "key": "Cache-Control",
-            "value": "max-age=0"
-          }
-        ]
-      }
+      "**/.*",
+      "**/node_modules/**"
     ],
     "rewrites": [
       {
@@ -25,9 +16,5 @@
         "destination": "/index.html"
       }
     ]
-  },
-  "firestore": {
-    "rules": "firestore.rules",
-    "indexes": "firestore.indexes.json"
   }
 }
