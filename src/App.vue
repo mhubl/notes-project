@@ -18,9 +18,16 @@
           </router-link>
         </li>
 
-        <li v-if="isAuthenticated" class="navbar-user">
+        <li v-if="isAuthenticated" class="nav-item">
           <router-link to="/" class="nav-link">
-            <span class="link-text logo-text">{{ this.$store.state.user.displayName }}</span>
+            <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="user" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="svg-inline--fa fa-user fa-w-14 fa-3x">
+              <path
+                fill="currentColor"
+                d="M224 256c70.7 0 128-57.3 128-128S294.7 0 224 0 96 57.3 96 128s57.3 128 128 128zm89.6 32h-16.7c-22.2 10.2-46.9 16-72.9 16s-50.6-5.8-72.9-16h-16.7C60.2 288 0 348.2 0 422.4V464c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48v-41.6c0-74.2-60.2-134.4-134.4-134.4z"
+                class="fa-primary">
+              </path>
+            </svg>
+            <span class="link-text">{{ this.$store.state.user.displayName }}</span>
           </router-link>
         </li>
 
@@ -54,6 +61,33 @@
           </router-link>
         </li>
 
+        <li v-if="isAuthenticated" class="nav-item">
+          <router-link to="/notes" class="nav-link">
+            <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="book" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="svg-inline--fa fa-book fa-w-14 fa-3x">
+              <path
+                fill="currentColor"
+                d="M448 360V24c0-13.3-10.7-24-24-24H96C43 0 0 43 0 96v320c0 53 43 96 96 96h328c13.3 0 24-10.7 24-24v-16c0-7.5-3.5-14.3-8.9-18.7-4.2-15.4-4.2-59.3 0-74.7 5.4-4.3 8.9-11.1 8.9-18.6zM128 134c0-3.3 2.7-6 6-6h212c3.3 0 6 2.7 6 6v20c0 3.3-2.7 6-6 6H134c-3.3 0-6-2.7-6-6v-20zm0 64c0-3.3 2.7-6 6-6h212c3.3 0 6 2.7 6 6v20c0 3.3-2.7 6-6 6H134c-3.3 0-6-2.7-6-6v-20zm253.4 250H96c-17.7 0-32-14.3-32-32 0-17.6 14.4-32 32-32h285.4c-1.9 17.1-1.9 46.9 0 64z"
+                class="fa-primary">
+
+              </path>
+            </svg>
+            <span class="link-text">Your notes</span>
+          </router-link>
+        </li>
+
+        <li v-if="isAuthenticated" class="nav-item">
+          <router-link to="/creator" class="nav-link">
+            <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="svg-inline--fa fa-plus fa-w-14 fa-2x">
+              <path
+                fill="currentColor"
+                d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"
+                class="fa-secondary note-icon">
+              </path>
+            </svg>
+            <span class="link-text">Add note</span>
+          </router-link>
+        </li>
+
         <li v-if="isAuthenticated" class="nav-item" v-on:click="signOut">
           <router-link to="/" class="nav-link sign-out">
             <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="sign-out-alt"
@@ -69,34 +103,17 @@
           </router-link>
         </li>
 
-        <li v-if="isAuthenticated" class="nav-item"> <!-- TODO: Change icon -->
-          <router-link to="/notes" class="nav-link">
-            <svg aria-hidden="true" focusable="false" data-prefix="far" data-icon="plus-square"
-                 class="svg-inline--fa fa-plus-square fa-w-14" role="img" xmlns="http://www.w3.org/2000/svg"
-                 viewBox="0 0 448 512">
-              <path
-                fill="currentColor"
-                d="M352 240v32c0 6.6-5.4 12-12 12h-88v88c0 6.6-5.4 12-12 12h-32c-6.6 0-12-5.4-12-12v-88h-88c-6.6 0-12-5.4-12-12v-32c0-6.6 5.4-12 12-12h88v-88c0-6.6 5.4-12 12-12h32c6.6 0 12 5.4 12 12v88h88c6.6 0 12 5.4 12 12zm96-160v352c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V80c0-26.5 21.5-48 48-48h352c26.5 0 48 21.5 48 48zm-48 346V86c0-3.3-2.7-6-6-6H54c-3.3 0-6 2.7-6 6v340c0 3.3 2.7 6 6 6h340c3.3 0 6-2.7 6-6z"
-                class="fa-primary">
-              </path>
-            </svg>
-            <span class="link-text">Your notes</span>
-          </router-link>
-        </li>
-
         <!-- Template item -->
         <li class="nav-item">
           <router-link to="/" class="nav-link">
-            <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="poo"
-                 class="svg-inline--fa fa-poo fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg"
-                 viewBox="0 0 512 512">
+            <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="cog" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="svg-inline--fa fa-cog fa-w-16 fa-3x">
               <path
                 fill="currentColor"
-                d="M451.4 369.1C468.7 356 480 335.4 480 312c0-39.8-32.2-72-72-72h-14.1c13.4-11.7 22.1-28.8 22.1-48 0-35.3-28.7-64-64-64h-5.9c3.6-10.1 5.9-20.7 5.9-32 0-53-43-96-96-96-5.2 0-10.2.7-15.1 1.5C250.3 14.6 256 30.6 256 48c0 44.2-35.8 80-80 80h-16c-35.3 0-64 28.7-64 64 0 19.2 8.7 36.3 22.1 48H104c-39.8 0-72 32.2-72 72 0 23.4 11.3 44 28.6 57.1C26.3 374.6 0 404.1 0 440c0 39.8 32.2 72 72 72h368c39.8 0 72-32.2 72-72 0-35.9-26.3-65.4-60.6-70.9zM192 256c17.7 0 32 14.3 32 32s-14.3 32-32 32-32-14.3-32-32 14.3-32 32-32zm159.5 139C341 422.9 293 448 256 448s-85-25.1-95.5-53c-2-5.3 2-11 7.8-11h175.4c5.8 0 9.8 5.7 7.8 11zM320 320c-17.7 0-32-14.3-32-32s14.3-32 32-32 32 14.3 32 32-14.3 32-32 32z"
-                class="fa-secondary">
+                d="M487.4 315.7l-42.6-24.6c4.3-23.2 4.3-47 0-70.2l42.6-24.6c4.9-2.8 7.1-8.6 5.5-14-11.1-35.6-30-67.8-54.7-94.6-3.8-4.1-10-5.1-14.8-2.3L380.8 110c-17.9-15.4-38.5-27.3-60.8-35.1V25.8c0-5.6-3.9-10.5-9.4-11.7-36.7-8.2-74.3-7.8-109.2 0-5.5 1.2-9.4 6.1-9.4 11.7V75c-22.2 7.9-42.8 19.8-60.8 35.1L88.7 85.5c-4.9-2.8-11-1.9-14.8 2.3-24.7 26.7-43.6 58.9-54.7 94.6-1.7 5.4.6 11.2 5.5 14L67.3 221c-4.3 23.2-4.3 47 0 70.2l-42.6 24.6c-4.9 2.8-7.1 8.6-5.5 14 11.1 35.6 30 67.8 54.7 94.6 3.8 4.1 10 5.1 14.8 2.3l42.6-24.6c17.9 15.4 38.5 27.3 60.8 35.1v49.2c0 5.6 3.9 10.5 9.4 11.7 36.7 8.2 74.3 7.8 109.2 0 5.5-1.2 9.4-6.1 9.4-11.7v-49.2c22.2-7.9 42.8-19.8 60.8-35.1l42.6 24.6c4.9 2.8 11 1.9 14.8-2.3 24.7-26.7 43.6-58.9 54.7-94.6 1.5-5.5-.7-11.3-5.6-14.1zM256 336c-44.1 0-80-35.9-80-80s35.9-80 80-80 80 35.9 80 80-35.9 80-80 80z"
+                class="fa-primary">
               </path>
             </svg>
-            <span class="link-text">xD</span>
+            <span class="link-text">Settings</span>
           </router-link>
         </li>
       </ul>
@@ -141,6 +158,7 @@ export default {
     --bg-primary: #212831;
     --bg-secondary: #1b1b1b;
     --transition-speed: 600ms;
+    --accent-color: #41B883
   }
 
   body {
@@ -159,6 +177,7 @@ export default {
     background-color: var(--bg-primary);
     transition: width 600ms ease;
     overflow: hidden;
+    z-index: 500;
   }
 
   .navbar-nav {
@@ -207,12 +226,12 @@ export default {
   }
 
   .fa-primary {
-    color: #00b1b3;
+    color: var(--accent-color);
     transition: var(--transition-speed);
   }
 
   .fa-secondary {
-    color: #00b1b3;
+    color: #fff;
     transition: var(--transition-speed);
   }
 
@@ -310,7 +329,7 @@ export default {
   /*}*/
 
   button {
-    background-color: #00b1b3;
+    background-color: var(--accent-color);
     color: #fff;
     border-radius: 6px;
     border: 1px solid lightgrey;
@@ -318,11 +337,11 @@ export default {
   }
 
   button:hover, button:focus {
-    background-color: #00C1C3;
+    filter: brightness(110%);
   }
 
   .link {
-    color: #00b1b3;
+    color: var(--accent-color);
     text-decoration: none;
   }
 
@@ -403,5 +422,18 @@ export default {
     border-radius: .3rem;
     font-size: 1.25rem;
     padding: .75rem 1.5rem;
+  }
+
+  /* Notes, creator */
+  .top-bar {
+    left: 85px;
+    right: 0;
+    display: flex;
+    border-bottom: 2px solid var(--accent-color);
+    background-color: #fafafa;
+  }
+  .header-title {
+    float: left;
+    margin-left: 8rem;
   }
 </style>

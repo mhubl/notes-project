@@ -4,6 +4,7 @@ import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
 import Notes from '../views/Notes.vue'
+import Creator from '@/views/Creator.vue'
 
 import * as firebase from 'firebase/app'
 import 'firebase/auth'
@@ -30,6 +31,11 @@ const routes = [
     path: '/notes',
     name: 'Notes',
     component: Notes,
+    meta: { requiresAuth: true }
+  }, {
+    path: '/creator',
+    name: 'Creator',
+    component: Creator,
     meta: { requiresAuth: true }
   }
 ]
