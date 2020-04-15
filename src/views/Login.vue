@@ -16,7 +16,7 @@
       <!--        TODO: Position and resize -->
       <div class="input-group">
         <div class="auth-provider">
-          <img src="../assets/google-brands.svg" class="auth-provider-icon">
+<!--          <img src="../assets/google-brands.svg" class="auth-provider-icon">-->
           Sign in with Google
         </div>
       </div>
