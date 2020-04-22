@@ -22,6 +22,11 @@
       </div>
       <!--        TODO: Positioning-->
       <div class="auth-footer">
+        <div v-if="this.errors.length">
+          <ul class="auth-errors">
+            <li v-bind:key="error" v-for="error in errors"> {{ error }}</li>
+          </ul>
+        </div>
         <router-link class="link auth-forgot" to="/register">
           Forgot your password?
         </router-link>
@@ -32,17 +37,46 @@
 </template>
 
 <script>
+import * as firebase from 'firebase/app'
+import 'firebase/auth'
+import { db } from '../database'
+
 export default {
   name: 'Login',
   data: function () {
     return {
       email: '',
-      password: ''
+      password: '',
+      errors: []
     }
   },
   methods: {
     signInEmail: function () {
-      this.$store.dispatch('userSignIn', { email: this.email, password: this.password })
+      this.errors = []
+      firebase.auth().signInWithEmailAndPassword(this.email, this.password)
+        .then(success => {
+          db.doc(`users/${firebase.auth().currentUser.uid}`).get()
+            .then(userData => {
+              this.$store.dispatch('userSignIn', userData)
+              this.$router.push('/notes')
+            })
+            .catch(error => {
+              this.signOut()
+              this.errors.push('Something went wrong, please try again later')
+              console.log(error) // TODO: Remove before prod
+            })
+        })
+        .catch(error => {
+          switch (error.code) {
+            case 'auth/user-disabled' || 'auth/user-not-found' || 'auth/wrong-password': {
+              this.errors.push('Wrong email or password')
+              break
+            }
+            case 'auth/invalid-email': {
+              this.errors.push('Invalid email address')
+            }
+          }
+        })
     }
   }
 }

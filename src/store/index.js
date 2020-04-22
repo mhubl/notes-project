@@ -1,5 +1,4 @@
 import Vue from 'vue'
-import router from '../router'
 import Vuex from 'vuex'
 import * as firebase from 'firebase/app'
 import 'firebase/auth'
@@ -20,29 +19,17 @@ const store = new Vuex.Store({
     },
     setUser (state, payload) {
       state.user = payload
-      state.user.displayName = 'John Smith'
     }
   },
   actions: {
     userSignIn: function ({ commit }, payload) {
-      firebase.auth().signInWithEmailAndPassword(payload.email, payload.password)
-        .then((success) => {
-          commit('setUser', firebase.auth().currentUser)
-          router.push('/notes')
-        })
-        .catch((error) => {
-          commit('setError', error)
-        })
+      commit('setUser', payload)
     },
     autoSignIn: function ({ commit }, payload) {
-      commit('setUser', firebase.auth().currentUser)
+      commit('setUser', payload)
     },
     userSignOut: function ({ commit }) {
       commit('setUser', null)
-      firebase.auth().signOut()
-        .catch((error) => {
-          commit('setError', error)
-        })
     },
     userRegister: function ({ commit }, payload) {
       firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password)
@@ -59,6 +46,9 @@ const store = new Vuex.Store({
           commit('setError', error)
         })
     }
+    // setUserData: firestoreAction(({ bindFirestoreRef }, uid) => {
+    //   return bindFirestoreRef('userData', db.doc(`users/${uid}`))
+    // })
   },
   getters: {
     isAuthenticated: function (state) {

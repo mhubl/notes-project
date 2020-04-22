@@ -7,7 +7,7 @@
       </router-link>
     </p>
     <!-- TODO: Add checks (and warnings) to verify passwords and emails match and satisfy security rules -->
-    <form class="auth-form">
+    <form class="auth-form" @submit.prevent="checkForm" >
       <div class="input-group">
         <input v-model="username" class="auth-input" type="text" placeholder="Username" required>
       </div>
@@ -25,6 +25,11 @@
       </div>
       <!--        TODO: Positioning-->
       <div class="auth-footer">
+        <div v-if="this.errors.length">
+          <ul class="auth-errors">
+            <li v-bind:key="error" v-for="error in errors"> {{ error }}</li>
+          </ul>
+        </div>
         <button class="auth-submit-btn">Sign up</button>
       </div>
     </form>
@@ -32,6 +37,10 @@
 </template>
 
 <script>
+import * as firebase from 'firebase'
+import 'firebase/auth'
+import { db } from '../database'
+
 export default {
   name: 'Register',
   data: function () {
@@ -40,18 +49,78 @@ export default {
       email: '',
       repeatEmail: '',
       password: '',
-      repeatPassword: ''
+      repeatPassword: '',
+      errors: []
+    }
+  },
+  methods: {
+    checkForm () {
+      this.errors = []
+      if (!this.validateEmail()) {
+        this.errors.push('Invalid email address')
+      }
+      if (!this.validateUsername()) {
+        this.errors.push('Username must be at least 6 characters long')
+      }
+      if (this.email !== this.repeatEmail) {
+        this.errors.push('Emails don\'t match')
+      }
+      if (!this.validatePassword()) {
+        this.errors.push('The password must be at least 8 characters long')
+      }
+      if (this.password !== this.repeatPassword) {
+        this.errors.push('Passwords don\'t match')
+      }
+      if (this.errors.length === 0) {
+        this.createAccount()
+      }
+    },
+    validateEmail () {
+      // this seems to be done the proper way by the browser already
+      return this.email.length > 0
+    },
+    validatePassword () {
+      return this.password.length >= 8
+    },
+    validateUsername () {
+      return this.username.length >= 6
+    },
+    createAccount () {
+      firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
+        .then(success => {
+          db.doc(`users/${firebase.auth().currentUser.uid}`).get()
+            .then(userData => {
+              this.$store.dispatch('userSignIn', userData)
+              this.$router.push('/notes')
+            })
+            .catch(error => {
+              this.signOut()
+              this.errors.push('Something went wrong, please try again later')
+              console.log('Couldn\'t retrieve user data')
+              console.log(error) // TODO: Remove before prod
+            })
+        })
+        .catch(error => {
+          switch (error.code) {
+            case 'auth/email-already-in-use': {
+              this.errors.push('This email address is already in use')
+              break
+            }
+            case 'auth/invalid-email': {
+              this.errors.push('This email address is invalid')
+              break
+            }
+            case 'auth/operation-not-allowed': {
+              this.errors.push('Not allowed')
+              break
+            }
+            case 'auth/weak-password': {
+              this.errors.push('The password is too weak')
+            }
+          }
+        })
     }
   }
-  // computed: {
-  //   // passwordCheck: this.password === this.repeatPassword,
-  //   // emailCheck: this.email === this.repeatEmail
-  // },
-  // methods: {
-  //   // userRegister: function () {
-  //   //   this.$store.dispatch('userRegister', { username: this.username, email: this.email, password: this.password })
-  //   // }
-  // }
 }
 </script>
 
