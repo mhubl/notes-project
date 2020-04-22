@@ -68,7 +68,10 @@ export default {
         })
         .catch(error => {
           switch (error.code) {
-            case 'auth/user-disabled' || 'auth/user-not-found' || 'auth/wrong-password': {
+            case 'auth/user-not-found': {
+            }
+            // eslint-disable-next-line no-fallthrough
+            case 'auth/wrong-password': {
               this.errors.push('Wrong email or password')
               break
             }
