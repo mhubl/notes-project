@@ -20,14 +20,18 @@
 
         <li v-if="isAuthenticated" class="nav-item">
           <router-link to="/" class="nav-link">
-            <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="user" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="svg-inline--fa fa-user fa-w-14 fa-3x">
+            <!-- v-if="this.$store.state.user.photoURL == null" -->
+            <svg aria-hidden="true" focusable="false"  data-icon="user" role="img" class="user-profile-pic">
               <path
                 fill="currentColor"
                 d="M224 256c70.7 0 128-57.3 128-128S294.7 0 224 0 96 57.3 96 128s57.3 128 128 128zm89.6 32h-16.7c-22.2 10.2-46.9 16-72.9 16s-50.6-5.8-72.9-16h-16.7C60.2 288 0 348.2 0 422.4V464c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48v-41.6c0-74.2-60.2-134.4-134.4-134.4z"
                 class="fa-primary">
               </path>
             </svg>
-            <span class="link-text">{{ this.$store.state.user.displayName }}</span>
+            <!--
+            <img hidden v-else :src="this.$store.state.user.photoURL" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="user" role="img" class="user-profile-pic"/>
+            -->
+            <span class="link-text">{{ this.$store.state.user.name }}</span>
           </router-link>
         </li>
 
@@ -123,6 +127,10 @@
 </template>
 
 <script>
+// import { db } from './database'
+// import * as firebase from 'firebase/app'
+// import 'firebase/auth'
+
 export default {
   methods: {
     signOut: function () {
@@ -134,6 +142,17 @@ export default {
       return this.$store.getters.isAuthenticated
     }
   }
+  // props: ['currUser']
+  // data: function () {
+  //   return {
+  //     currUser: null
+  //   }
+  // },
+  // firebase: function () {
+  //   return {
+  //     currUser: db.doc(`users/${firebase.auth().currentUser.uid}`)
+  //   }
+  // }
 }
 </script>
 
@@ -257,6 +276,12 @@ export default {
     position: absolute;
     left: -999px;
     transition: var(--transition-speed);
+  }
+
+  .user-profile-pic {
+    margin-left: 1rem;
+    width: 100%;
+    border-radius: 50%;
   }
 
   .navbar:hover .logo svg {
@@ -391,6 +416,11 @@ export default {
     border: 0;
     box-sizing: border-box;
     margin-bottom: 1.5rem;
+  }
+
+  ul.auth-errors {
+    color: red;
+    text-align: left;
   }
 
   /* TODO: move to scoped style in login if there's no use for it in register, rename otherwise  */

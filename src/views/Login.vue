@@ -15,7 +15,7 @@
       </div>
       <!--        TODO: Position and resize -->
       <div class="input-group">
-        <div class="auth-provider">
+        <div class="auth-provider" @click="signInGoogle">
 <!--          <img src="../assets/google-brands.svg" class="auth-provider-icon">-->
           Sign in with Google
         </div>
@@ -56,8 +56,8 @@ export default {
       firebase.auth().signInWithEmailAndPassword(this.email, this.password)
         .then(success => {
           db.doc(`users/${firebase.auth().currentUser.uid}`).get()
-            .then(userData => {
-              this.$store.dispatch('userSignIn', userData)
+            .then(userSnap => {
+              this.$store.dispatch('userSignIn', userSnap.data())
               this.$router.push('/notes')
             })
             .catch(error => {
@@ -79,6 +79,60 @@ export default {
               this.errors.push('Invalid email address')
             }
           }
+        })
+    },
+    signInGoogle: function () {
+      const provider = new firebase.auth.GoogleAuthProvider()
+      firebase.auth().signInWithPopup(provider)
+        .then(success => {
+          db.doc(`users/${firebase.auth().currentUser.uid}`).get()
+            .then(userSnap => {
+              if (userSnap.exists) {
+                this.$store.dispatch('userSignIn', userSnap.data())
+                this.$router.push('/notes')
+              } else {
+                userSnap.ref.set(
+                  {
+                    name: firebase.auth().currentUser.displayName,
+                    email: firebase.auth().currentUser.email,
+                    created: firebase.firestore.FieldValue.Timestamp,
+                    photoURL: firebase.auth().currentUser.photoURL
+                  }
+                ).catch(error => {
+                  console.log('New user created, but writing to db failed')
+                  console.log(error) // TODO: remove before prod
+                })
+              }
+            })
+            .catch(error => {
+              this.signOut()
+              this.errors.push('Something went wrong, please try again later')
+              console.log('Failed to retrieve user data')
+              console.log(error) // TODO: Remove before prod
+            })
+        })
+        .catch(error => {
+          switch (error.code) {
+            case 'auth/account-exists-with-different-credential': {
+              this.errors = ['Account already exists, but is not linked with Google']
+              break
+            }
+            case 'auth/popup-blocked': {
+              this.errors = ['Sign in popup blocked by browser']
+              break
+            }
+            case 'auth/cancelled-popup-request': {
+            }
+            // eslint-disable-next-line no-fallthrough
+            case 'auth/popup-closed-by-user': {
+              this.errors = []
+              break
+            }
+            default: {
+              this.errors = ['Something went wrong, please try again later']
+            }
+          }
+          console.log(error) // TODO: Remove before prod
         })
     }
   }

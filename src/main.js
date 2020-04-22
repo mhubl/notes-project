@@ -22,6 +22,9 @@ const app = new Vue({
       if (router.currentRoute.path !== '/') {
         router.push('/')
       }
+    },
+    registerAccount: function (uid, userData) {
+      db.collection('users').doc(uid).set(userData)
     }
   },
   firebase: function () {

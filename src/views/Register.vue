@@ -88,9 +88,22 @@ export default {
     createAccount () {
       firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
         .then(success => {
-          db.doc(`users/${firebase.auth().currentUser.uid}`).get()
-            .then(userData => {
-              this.$store.dispatch('userSignIn', userData)
+          firebase.auth().currentUser.displayName = this.username
+          const userRef = db.doc(`users/${firebase.auth().currentUser.uid}`)
+          userRef.set(
+            {
+              name: this.username,
+              email: this.email,
+              created: firebase.firestore.FieldValue.Timestamp,
+              photoURL: null
+            }
+          ).catch(error => {
+            console.log('New user created, but writing to db failed')
+            console.log(error) // TODO: remove before prod
+          })
+          userRef.get()
+            .then(userSnap => {
+              this.$store.dispatch('userSignIn', userSnap.data())
               this.$router.push('/notes')
             })
             .catch(error => {
