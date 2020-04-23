@@ -1,5 +1,5 @@
 <template>
-  <div class="notes-page">
+  <div class="notes-page" >
     <div class="top-bar">
       <h1 class="header-title">Your notes</h1>
     </div>
@@ -7,6 +7,7 @@
       <note
         v-for="note in notes"
         v-bind:key="note.id"
+        v-bind:id="note.id"
         v-bind:title="note.title"
         v-bind:text="note.text"
         v-bind:author="note.author"
@@ -65,7 +66,7 @@ export default {
   },
   firestore () {
     return {
-      notes: db.collection('notes').where('author', 'array-contains', db.doc('users/' + firebase.auth().currentUser.uid))
+      notes: db.collection('notes').where('author', 'array-contains', db.doc('users/' + firebase.auth().currentUser.uid)).orderBy('created', 'desc')
     }
   }
 }
@@ -78,6 +79,7 @@ export default {
     left: 75px;
     top: 100px;
     position: absolute;
+    width: 100%;
   }
   /*button {*/
   /*  width: 8rem;*/

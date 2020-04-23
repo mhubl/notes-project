@@ -1,23 +1,18 @@
 <template>
-  <div class="note">
+  <div class="note" v-on:click="openViewer">
     <div class="note-header"><h4>{{ title }}</h4></div>
     <hr>
     <div class="note-body">{{ text }}</div>
-    <div class="note-footer">{{ created.toDate().toUTCString() }}</div>
+    <div class="note-footer">{{ created.toDate().toUTCString()}}</div>
   </div>
 </template>
 
 <script>
 export default {
   name: 'note',
-  data: function () {
-    return {
-      // id: '',
-      // title: ''
-      // text: '',
-      // files: null,
-      // author: '',
-      // created: ''
+  methods: {
+    openViewer: function () {
+      this.$router.push(`/viewer/${this.id}`)
     }
   },
   props: ['id', 'title', 'text', 'author', 'created']

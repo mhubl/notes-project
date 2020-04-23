@@ -7,6 +7,7 @@
     <div class="ta-container">
       <textarea class="title-input" v-model="title" placeholder="Title" required></textarea>
       <textarea class="text-input" v-model="text" placeholder="Your note" required></textarea>
+      <input class="share-input" type="email" v-model="shareUser" placeholder="Share with">
     </div>
     <button type="submit">Save</button>
   </form>
@@ -22,24 +23,44 @@ export default {
   data: function () {
     return {
       title: '',
-      text: ''
+      text: '',
+      shareUser: ''
     }
   },
   methods: {
     addNote: function () {
-      db.collection('notes').add({
-        title: this.title,
-        text: this.text,
-        author: db.doc('users/' + firebase.auth().currentUser.uid),
-        created: Timestamp.now()
-      }).then(success => {
-        console.log('Added to db')
-        this.$router.push('/notes')
+      if (this.shareUser !== '') {
+        db.collection('users').where('email', '==', this.shareUser).get()
+          .then(userSnap => {
+            console.log(userSnap)
+            const userRef = userSnap.docs[0].ref
+            const users = [userRef, db.doc('users/' + firebase.auth().currentUser.uid)]
+            db.collection('notes').add({
+              title: this.title,
+              text: this.text,
+              author: users,
+              created: Timestamp.now()
+            })
+              .then(success => {
+                console.log('Added to db') // TODO: remove before prod
+                this.$router.push('/notes')
+              })
+          })
+      } else {
+        db.collection('notes').add({
+          title: this.title,
+          text: this.text,
+          author: [db.doc('users/' + firebase.auth().currentUser.uid)],
+          created: Timestamp.now()
+        }).then(success => {
+          console.log('Added to db') // TODO: remove before prod
+          this.$router.push('/notes')
+        }
+        ).catch(error => {
+          console.log(error)
+        }
+        )
       }
-      ).catch(error => {
-        console.log(error)
-      }
-      )
     }
   }
 }

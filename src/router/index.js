@@ -5,6 +5,7 @@ import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
 import Notes from '../views/Notes.vue'
 import Creator from '@/views/Creator.vue'
+import Viewer from '@/views/Viewer.vue'
 
 import * as firebase from 'firebase/app'
 import 'firebase/auth'
@@ -20,12 +21,14 @@ const routes = [
   {
     path: '/login',
     name: 'Login',
-    component: Login
+    component: Login,
+    meta: { requiresNoAuth: true }
   },
   {
     path: '/register',
     name: 'Register',
-    component: Register
+    component: Register,
+    meta: { requiresNoAuth: true }
   },
   {
     path: '/notes',
@@ -37,6 +40,11 @@ const routes = [
     name: 'Creator',
     component: Creator,
     meta: { requiresAuth: true }
+  }, {
+    path: '/viewer/:id',
+    name: 'Viewer',
+    component: Viewer,
+    meta: { requiresAuth: true }
   }
 ]
 
@@ -46,7 +54,8 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
-  const isAuthenticated = firebase.auth().currentUser
+  // const requiresNoAuth = to.matched.some(record => record.meta.requiresNoAuth)
+  const isAuthenticated = firebase.auth().currentUser !== null
   if (requiresAuth && !isAuthenticated) {
     next('/login')
   } else {
