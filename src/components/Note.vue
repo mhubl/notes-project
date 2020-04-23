@@ -3,7 +3,7 @@
     <div class="note-header"><h4>{{ title }}</h4></div>
     <hr>
     <div class="note-body">{{ text }}</div>
-    <div class="note-footer">{{ created.toDate().toUTCString()}}</div>
+    <div class="note-footer">{{ created.toDate().toUTCString() }}</div>
   </div>
 </template>
 
