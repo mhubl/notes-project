@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import { vuexfireMutations, firestoreAction } from 'vuexfire'
 import * as firebase from 'firebase/app'
 import 'firebase/auth'
 import { db } from '../database'
@@ -10,7 +11,8 @@ const store = new Vuex.Store({
   state: {
     appTitle: 'Memo Lite',
     error: null,
-    user: null
+    user: null,
+    notes: []
   },
   mutations: {
     setError (state, payload) {
@@ -19,17 +21,41 @@ const store = new Vuex.Store({
     },
     setUser (state, payload) {
       state.user = payload
-    }
+    },
+    ...vuexfireMutations
   },
-  actions: {
+  actions: { // TODO: Clean up the debug console.logs below
     userSignIn: function ({ commit }, payload) {
       commit('setUser', payload)
+      console.log('Trying to bind notes: [userSignIn]')
+      this.dispatch('bindNotes')
+      console.log('Success binding notes! [userSignIn]')
     },
+    bindNotes: firestoreAction(({ bindFirestoreRef }) => {
+      const currUser = firebase.auth().currentUser
+
+      const query = db.collection('notes')
+        .where('author', 'array-contains', db.doc(`users/${currUser.uid}`))
+        .orderBy('created', 'desc')
+      console.log('Function done, returning [bind]')
+      return bindFirestoreRef('notes', query)
+    }),
+    unbindNotes: firestoreAction(({ unbindFirestoreRef }) => {
+      console.log('Calling the function [unbind]')
+      unbindFirestoreRef('notes')
+      console.log('DONE! [unbind]')
+    }),
     autoSignIn: function ({ commit }, payload) {
       commit('setUser', payload)
+      console.log('Trying to bind notes: [autoSignIn]')
+      this.dispatch('bindNotes')
+      console.log('Success binding notes! [autoSignIn]')
     },
     userSignOut: function ({ commit }) {
       commit('setUser', null)
+      console.log('Unbinding notes: [userSignOut]')
+      this.dispatch('unbindNotes')
+      console.log('Success unbinding notes! [userSignOut]')
     },
     userRegister: function ({ commit }, payload) {
       firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password)
@@ -46,9 +72,6 @@ const store = new Vuex.Store({
           commit('setError', error)
         })
     }
-    // setUserData: firestoreAction(({ bindFirestoreRef }, uid) => {
-    //   return bindFirestoreRef('userData', db.doc(`users/${uid}`))
-    // })
   },
   getters: {
     isAuthenticated: function (state) {
