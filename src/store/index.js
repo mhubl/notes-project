@@ -27,9 +27,7 @@ const store = new Vuex.Store({
   actions: { // TODO: Clean up the debug console.logs below
     userSignIn: function ({ commit }, payload) {
       commit('setUser', payload)
-      console.log('Trying to bind notes: [userSignIn]')
       this.dispatch('bindNotes')
-      console.log('Success binding notes! [userSignIn]')
     },
     bindNotes: firestoreAction(({ bindFirestoreRef }) => {
       const currUser = firebase.auth().currentUser
@@ -37,25 +35,18 @@ const store = new Vuex.Store({
       const query = db.collection('notes')
         .where('author', 'array-contains', db.doc(`users/${currUser.uid}`))
         .orderBy('created', 'desc')
-      console.log('Function done, returning [bind]')
       return bindFirestoreRef('notes', query)
     }),
     unbindNotes: firestoreAction(({ unbindFirestoreRef }) => {
-      console.log('Calling the function [unbind]')
       unbindFirestoreRef('notes')
-      console.log('DONE! [unbind]')
     }),
     autoSignIn: function ({ commit }, payload) {
       commit('setUser', payload)
-      console.log('Trying to bind notes: [autoSignIn]')
       this.dispatch('bindNotes')
-      console.log('Success binding notes! [autoSignIn]')
     },
     userSignOut: function ({ commit }) {
       commit('setUser', null)
-      console.log('Unbinding notes: [userSignOut]')
       this.dispatch('unbindNotes')
-      console.log('Success unbinding notes! [userSignOut]')
     },
     userRegister: function ({ commit }, payload) {
       firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password)
