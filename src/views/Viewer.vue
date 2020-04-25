@@ -6,15 +6,15 @@
     <div>
       <div class="ta-container">
         <div class="viewer-title">
-          <h1>{{ note.title }}</h1>
+          <h1>{{ (note == null) ? '' : note.title }}</h1>
         </div>
         <div class="viewer-text">
-          <p>{{ note.text }}</p>
+          <p>{{ (note == null) ? '' : note.text }}</p>
         </div>
         <div class="viewer-footer">
           <div class="viewer-edit">
-            <input class="viewer-share-button" type="email" v-bind="shareUser" placeholder="Share">
-            <button @click="shareNote">Share</button>
+            <input type="email" v-model="shareUser" placeholder="Share">
+            <button class="viewer-share-button" @click="shareNote">Share</button>
           </div>
           <button class="delete-btn" @click="deleteNote">Delete</button>
           <button><router-link to="/notes">Go back</router-link></button>
@@ -41,16 +41,20 @@ export default {
   },
   methods: {
     shareNote: function () {
+      if (this.shareUser == null || this.shareUser === '') {
+        console.log('No user selected')
+        return false
+      }
       db.doc(`notes/${this.$route.params.id}`).get()
         .then(noteSnap => {
           db.collection('users').where('email', '==', this.shareUser).get()
             .then(userSnap => {
-              const authors = noteSnap.data().author
-              if (this.shareUser !== '') {
-                console.log(authors)
-                authors.push(userSnap.docs[0].ref)
-                console.log(authors)
+              if (userSnap.empty) {
+                console.log('User does not exist')
+                return false
               }
+              const authors = noteSnap.data().author
+              authors.push(userSnap.docs[0].ref)
               noteSnap.ref.update('author', authors).then(success => {
                 this.$router.push('/notes')
               })
@@ -61,8 +65,7 @@ export default {
       db.doc(`notes/${this.$route.params.id}`).delete()
         .then(success => {
           this.$router.push('/notes')
-        }
-        )
+        })
     }
   }
 }
