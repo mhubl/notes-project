@@ -29,38 +29,29 @@ export default {
   },
   methods: {
     addNote: function () {
-      if (this.shareUser !== '') {
-        db.collection('users').where('email', '==', this.shareUser).get()
-          .then(userSnap => {
-            console.log(userSnap)
-            const userRef = userSnap.docs[0].ref
-            const users = [userRef, db.doc('users/' + firebase.auth().currentUser.uid)]
-            db.collection('notes').add({
-              title: this.title,
-              text: this.text,
-              author: users,
-              created: Timestamp.now()
-            })
-              .then(success => {
-                console.log('Added to db') // TODO: remove before prod
-                this.$router.push('/notes')
-              })
-          })
-      } else {
-        db.collection('notes').add({
-          title: this.title,
-          text: this.text,
-          author: [db.doc('users/' + firebase.auth().currentUser.uid)],
-          created: Timestamp.now()
-        }).then(success => {
-          console.log('Added to db') // TODO: remove before prod
-          this.$router.push('/notes')
-        }
-        ).catch(error => {
-          console.log(error)
-        }
-        )
+      const currUser = firebase.auth().currentUser
+      if (currUser == null) {
+        return false
       }
+      const author = [db.doc(`users/${currUser.uid}`)]
+      db.collection('users').where('email', '==', this.shareUser).get()
+        .then(userSnap => {
+          if (!userSnap.empty) {
+            author.push(userSnap.docs[0].ref)
+          } else if (this.shareUser !== '') {
+            console.log('User does not exist')
+            return false
+          }
+          db.collection('notes').add({
+            title: this.title,
+            text: this.text,
+            author: author,
+            created: Timestamp.now()
+          }).then(success => {
+            console.log('Added to db') // TODO: remove before prod
+            this.$router.push('/notes')
+          })
+        })
     }
   }
 }

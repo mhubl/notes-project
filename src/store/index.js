@@ -24,7 +24,7 @@ const store = new Vuex.Store({
     },
     ...vuexfireMutations
   },
-  actions: { // TODO: Clean up the debug console.logs below
+  actions: {
     userSignIn: function ({ commit }, payload) {
       commit('setUser', payload)
       this.dispatch('bindNotes')
