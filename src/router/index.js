@@ -6,6 +6,7 @@ import Register from '../views/Register.vue'
 import Notes from '../views/Notes.vue'
 import Creator from '@/views/Creator.vue'
 import Viewer from '@/views/Viewer.vue'
+import Calendar from '@/views/Calendar.vue'
 
 import * as firebase from 'firebase/app'
 import 'firebase/auth'
@@ -44,6 +45,11 @@ const routes = [
     path: '/viewer/:id',
     name: 'Viewer',
     component: Viewer,
+    meta: { requiresAuth: true }
+  }, {
+    path: '/calendar',
+    name: 'Calendar',
+    component: Calendar,
     meta: { requiresAuth: true }
   }
 ]

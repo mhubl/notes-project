@@ -46,7 +46,8 @@ export default {
             title: this.title,
             text: this.text,
             author: author,
-            created: Timestamp.now()
+            created: Timestamp.now(),
+            dateInfo: null
           }).then(success => {
             console.log('Added to db') // TODO: remove before prod
             this.$router.push('/notes')
