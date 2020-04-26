@@ -22,7 +22,6 @@
 
 <script>
 import note from '../components/Note.vue'
-import 'firebase/auth'
 
 export default {
   name: 'Notes',
@@ -31,16 +30,6 @@ export default {
     return {
       notes: this.$store.state.notes,
       filters: []
-    }
-  },
-  methods: {
-    filterNotes: function () {
-      for (const filter in this.filters) {
-        this.applyFilter(filter)
-      }
-    },
-    applyFilter: function (filter) { // TODO: Placeholder for now
-      return false
     }
   }
 }

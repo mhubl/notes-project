@@ -18,6 +18,7 @@
 import { db, Timestamp } from '@/database'
 import * as firebase from 'firebase/app'
 import 'firebase/auth'
+
 export default {
   name: 'creator',
   data: function () {

@@ -3,12 +3,15 @@
     <div class="calendar-top"></div>
     <div class="calendar-container">
       <FullCalendar
+        ref="calendar"
         defaultView="dayGridMonth"
         :plugins="calendarPlugins"
         selectable="true"
         :header="calendarHeader"
         height="parent"
-        :dateClick="handleDateClick"
+        @select="handleSelect"
+        @eventClick="handleEventClick"
+        :events="getEvents"
         class="calendar-view"
       />
     </div>
@@ -21,6 +24,10 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import listPlugin from '@fullcalendar/list'
 import interactionPlugin from '@fullcalendar/interaction'
+
+import { db, Timestamp } from '../database'
+import * as firebase from 'firebase/app'
+import 'firebase/auth'
 
 import '@fullcalendar/core/main.css'
 import '@fullcalendar/daygrid/main.css'
@@ -49,11 +56,61 @@ export default {
     }
   },
   methods: {
-    setViewMonth: function () {
-
+    handleSelect: function (selectionInfo) {
+      const startDate = Timestamp.fromDate(selectionInfo.start)
+      const endDate = Timestamp.fromDate(selectionInfo.end)
+      const noteTitle = prompt(`You're creating an event between ${selectionInfo.startStr} and ${selectionInfo.endStr}.\nWhat do you want to title it?`, '')
+      if (noteTitle) {
+        this.addEvent(startDate, endDate, selectionInfo.allDay, noteTitle)
+      }
     },
-    handleDateClick: function () {
-      // handle date click
+    addEvent: function (startDate, endDate, allDay, noteTitle) {
+      const currUser = firebase.auth().currentUser
+      if (currUser) {
+        db.collection('notes').add({
+          title: noteTitle,
+          text: '',
+          author: [db.doc(`users/${currUser.uid}`)],
+          created: Timestamp.now(),
+          isEvent: true,
+          allDay: allDay,
+          start: startDate,
+          end: endDate
+        }).then(success => {
+          console.log('Event added') // TODO: Remove before prod
+          this.$refs.calendar.getApi().refetchEvents()
+        })
+      }
+    },
+    inRange: function (start, end, note) {
+      start = Timestamp.fromDate(start)
+      end = Timestamp.fromDate(end)
+      return start < note.start < end
+    },
+    getEvents: function (info, successCallback, failureCallback) {
+      try {
+        const notes = this.$store.state.notes
+        const events = []
+        notes.forEach((note) => {
+          if (note.isEvent && this.inRange(info.start, info.end, note)) {
+            events.push({
+              title: note.title,
+              text: note.text,
+              start: note.start.toDate(),
+              end: note.end.toDate(),
+              allDay: note.allDay
+            })
+          }
+        })
+        successCallback(events)
+      } catch (err) {
+        failureCallback(err)
+      }
+    },
+    handleEventClick: function (info) {
+      info.jsEvent.preventDefault()
+      // TODO: Docelowo tutaj przekierowujemy do editora, ale go nie ma xD
+      alert(info.event.extendedProps.text)
     }
   }
 }

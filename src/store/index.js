@@ -12,7 +12,15 @@ const store = new Vuex.Store({
     appTitle: 'Memo Lite',
     error: null,
     user: null,
-    notes: []
+    notes: [],
+    filters: [
+      {
+        name: 'eventOnly',
+        check: function (note) {
+          return note.isEvent
+        }
+      }
+    ]
   },
   mutations: {
     setError (state, payload) {
@@ -67,6 +75,32 @@ const store = new Vuex.Store({
   getters: {
     isAuthenticated: function (state) {
       return state.user !== null && state.user !== undefined
+    },
+    getNotes: function (state) {
+      return state.notes
+    },
+    filterNotes: function (state, filters) {
+      let filteredNotes = this.getNotes()
+      for (const filterName in filters) {
+        filteredNotes = this.applyFilter(filterName, filteredNotes)
+      }
+      return filteredNotes
+    },
+    applyFilter: function (state, filterName, notes = state.notes) {
+      const filter = this.getFilter(filterName)
+      const filteredNotes = []
+      for (const note in notes) {
+        if (filter.check(note)) {
+          filteredNotes.push(note)
+        }
+      }
+      return filteredNotes
+    },
+    getFilter: function (state, filterName) {
+      for (const filter in state.filters) {
+        if (filter.name === filterName) return filter
+      }
+      return false
     }
   }
 })

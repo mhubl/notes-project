@@ -5,7 +5,7 @@ import store from './store'
 import 'firebase/auth'
 import { firestorePlugin } from 'vuefire'
 import { db } from './database'
-import * as firebase from 'firebase'
+import * as firebase from 'firebase/app'
 
 Vue.config.productionTip = false
 Vue.use(firestorePlugin)
