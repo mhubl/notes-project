@@ -12,7 +12,7 @@ export default {
   name: 'note',
   methods: {
     openViewer: function () {
-      this.$router.push(`/viewer/${this.id}`)
+      this.$router.push(`/edit/${this.id}`)
     }
   },
   props: ['id', 'title', 'text', 'author', 'created']
@@ -22,11 +22,18 @@ export default {
 <style scoped>
   .note {
     margin: 1vh 1vw;
-    background-color: #fff;
     border-radius: 1vmin;
     padding: 4%;
-    box-shadow: 5px 5px 15px #888888;
+    border: 1px solid #bbbbbb;
     text-align: justify;
+    transition: ease-in-out 150ms;
+    z-index: 5;
+  }
+
+  .note:hover {
+    /*box-shadow: 5px 5px 15px #eeeeee;*/
+    cursor: pointer;
+    background-color: #e1fde5;
   }
 
   .note-header {
@@ -56,8 +63,9 @@ export default {
 
   hr {
     clear: both;
-    border: 2px solid var(--bg-primary);
+    border: 2px solid var(--accent-color);
     border-radius: 2px;
+    color: var(--accent-color);
   }
 
   #pin {

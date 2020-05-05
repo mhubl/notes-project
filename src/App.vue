@@ -4,7 +4,7 @@
       <ul class="navbar-nav">
 
         <li class="logo">
-          <router-link to="/" class="nav-link">
+          <router-link to="/notes" class="nav-link">
             <span class="link-text logo-text">Memo Lite</span>
             <svg aria-hidden="true" focusable="false" data-prefix="fad" data-icon="angle-double-right" role="img"
                  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"
@@ -16,12 +16,14 @@
               </path>
             </svg>
           </router-link>
-        </li>
+        </li> <!-- Logo -->
 
         <li v-if="isAuthenticated" class="nav-item">
-          <router-link to="/" class="nav-link">
+          <router-link to="/notes" class="nav-link">
             <!--  v-if="this.$store.state.user.photoURL == null" -->
-            <svg aria-hidden="true" focusable="false"  data-icon="user" role="img" class="svg-inline--fa fa-user fa-w-14 fa-3x">
+            <svg aria-hidden="true" focusable="false"  data-icon="user" role="img"
+                 class="svg-inline--fa fa-user fa-w-14 fa-3x" xmlns="http://www.w3.org/2000/svg"
+                 viewBox="0 0 512 512">
               <path
                 fill="currentColor"
                 d="M224 256c70.7 0 128-57.3 128-128S294.7 0 224 0 96 57.3 96 128s57.3 128 128 128zm89.6 32h-16.7c-22.2 10.2-46.9 16-72.9 16s-50.6-5.8-72.9-16h-16.7C60.2 288 0 348.2 0 422.4V464c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48v-41.6c0-74.2-60.2-134.4-134.4-134.4z"
@@ -33,7 +35,7 @@
             -->
             <span class="link-text">{{ this.$store.state.user.name }}</span>
           </router-link>
-        </li>
+        </li>  <!-- User icon -->
 
         <li v-if="!isAuthenticated" class="nav-item">
           <router-link to="/login" class="nav-link">
@@ -48,7 +50,7 @@
             </svg>
             <span class="link-text">Sign&nbsp;in</span>
           </router-link>
-        </li>
+        </li> <!-- Sign in -->
 
         <li v-if="!isAuthenticated" class="nav-item">
           <router-link to="/register" class="nav-link">
@@ -63,7 +65,7 @@
             </svg>
             <span class="link-text">Create an account</span>
           </router-link>
-        </li>
+        </li> <!-- Create an account -->
 
         <li v-if="isAuthenticated" class="nav-item">
           <router-link to="/notes" class="nav-link">
@@ -76,10 +78,10 @@
             </svg>
             <span class="link-text">Your notes</span>
           </router-link>
-        </li>
+        </li> <!-- Your notes -->
 
         <li v-if="isAuthenticated" class="nav-item">
-          <router-link to="/creator" class="nav-link">
+          <router-link to="/create" class="nav-link">
             <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="svg-inline--fa fa-plus fa-w-14 fa-2x">
               <path
                 fill="currentColor"
@@ -89,7 +91,7 @@
             </svg>
             <span class="link-text">Add note</span>
           </router-link>
-        </li>
+        </li> <!-- Add note -->
 
         <li v-if="isAuthenticated" class="nav-item">
           <router-link to="/calendar" class="nav-link">
@@ -102,10 +104,10 @@
             </svg>
             <span class="link-text">Calendar</span>
           </router-link>
-        </li>
+        </li> <!-- Calendar -->
 
         <li v-if="isAuthenticated" class="nav-item" v-on:click="signOut">
-          <router-link to="/" class="nav-link sign-out">
+          <router-link to="/login" class="nav-link sign-out">
             <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="sign-out-alt"
                  class="svg-inline--fa fa-sign-out-alt fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg"
                  viewBox="0 0 512 512">
@@ -117,11 +119,11 @@
             </svg>
             <span class="link-text">Sign&nbsp;out</span>
           </router-link>
-        </li>
+        </li> <!-- Sign out -->
 
         <!-- Template item -->
         <li class="nav-item">
-          <router-link to="/" class="nav-link">
+          <router-link to="/login" class="nav-link">
             <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="cog" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="svg-inline--fa fa-cog fa-w-16 fa-3x">
               <path
                 fill="currentColor"
@@ -131,17 +133,14 @@
             </svg>
             <span class="link-text">Settings</span>
           </router-link>
-        </li>
+        </li> <!-- Settings -->
       </ul>
     </nav>
-    <router-view/>
+    <router-view :key="$route.fullPath" />
   </div>
 </template>
 
 <script>
-// import { db } from './database'
-// import * as firebase from 'firebase/app'
-// import 'firebase/auth'
 
 export default {
   methods: {
@@ -183,13 +182,13 @@ export default {
 
   :root {
     font-size: 16px;
-    font-family: 'Open Sans';
+    font-family: Avenir, Helvetica, Arial, sans-serif;
     --text-primary: #b6b6b6;
     --text-secondary: #ececec;
     --bg-primary: #212831;
     --bg-secondary: #1b1b1b;
     --transition-speed: 600ms;
-    --accent-color: #41B883
+    --accent-color: #3da779
   }
 
   body {
@@ -370,15 +369,60 @@ export default {
     border-radius: 6px;
     border: 1px solid lightgrey;
     transition: ease-in-out 200ms;
+    cursor: pointer;
   }
 
   button:hover, button:focus {
     filter: brightness(110%);
   }
 
+  input:focus {
+    outline-color: var(--accent-color);
+  }
+
+  input {
+    font-font: inherit;
+  }
+
+  .top-bar {
+     height: 80px;
+     background-color: #fcfcfc;
+     position: fixed;
+     width: 100%;
+     top: 0;
+    z-index: 6;
+   }
+
+  .page-wrapper {
+    margin: 0 7rem;
+    font-size: inherit;
+  }
+
+  .top-header {
+    float: left;
+    z-index: 7;
+  }
+
+  .top-hr {
+    background-color: var(--accent-color);
+    position: fixed;
+    top: 78px;
+    left: 0;
+    padding: 0;
+    margin: 0;
+    height: 2px;
+    width: 100%;
+    z-index: 7;
+  }
+
   .link {
     color: var(--accent-color);
     text-decoration: none;
+    cursor: pointer;
+  }
+
+  textarea {
+    resize: none;
   }
 
   .link:hover, .link:focus {
@@ -466,17 +510,17 @@ export default {
   }
 
   /* Notes, creator */
-  .top-bar {
-    left: 85px;
-    right: 0;
-    display: flex;
-    border-bottom: 2px solid var(--accent-color);
-    background-color: #fafafa;
-  }
-  .header-title {
-    float: left;
-    margin-left: 8rem;
-  }
+  /*.top-bar {*/
+  /*  left: 85px;*/
+  /*  right: 0;*/
+  /*  display: flex;*/
+  /*  border-bottom: 2px solid var(--accent-color);*/
+  /*  background-color: #fafafa;*/
+  /*}*/
+  /*.header-title {*/
+  /*  float: left;*/
+  /*  margin-left: 8rem;*/
+  /*}*/
   /* FULLCALENDAR STYLE OVERRIDE */
   .fc-button-primary {
     background-color: var(--accent-color);

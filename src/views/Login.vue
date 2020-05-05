@@ -39,7 +39,7 @@
 <script>
 import * as firebase from 'firebase/app'
 import 'firebase/auth'
-import { db } from '../database'
+import { db, Timestamp } from '../database'
 
 export default {
   name: 'Login',
@@ -95,10 +95,14 @@ export default {
                   {
                     name: firebase.auth().currentUser.displayName,
                     email: firebase.auth().currentUser.email,
-                    created: firebase.firestore.FieldValue.Timestamp,
+                    created: Timestamp.now(),
                     photoURL: firebase.auth().currentUser.photoURL
                   }
-                ).catch(error => {
+                  // TODO: Update snapshot data and then do the .then
+                ).then(_ => {
+                  this.$store.dispatch('userSignIn', userSnap.data())
+                  this.$router.push('/notes')
+                }).catch(error => {
                   console.log('New user created, but writing to db failed')
                   console.log(error) // TODO: remove before prod
                 })

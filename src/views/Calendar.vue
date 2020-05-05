@@ -10,9 +10,10 @@
         :header="calendarHeader"
         height="parent"
         @select="handleSelect"
-        @eventClick="handleEventClick"
         :events="getEvents"
         class="calendar-view"
+        selectHelper="true"
+        :event-render="createPopover"
       />
     </div>
   </div>
@@ -29,11 +30,14 @@ import { db, Timestamp } from '../database'
 import * as firebase from 'firebase/app'
 import 'firebase/auth'
 
+import tippy from 'tippy.js'
+
 import '@fullcalendar/core/main.css'
 import '@fullcalendar/daygrid/main.css'
 import '@fullcalendar/timegrid/main.css'
 import '@fullcalendar/list/main.css'
-import '../fullcalendarOverrides.css'
+import 'tippy.js/dist/tippy.css'
+import 'tippy.js/themes/translucent.css'
 
 export default {
   name: 'Calendar.vue',
@@ -56,6 +60,24 @@ export default {
     }
   },
   methods: {
+    createPopover: function (info) {
+      const popoverMain = `<b>${info.event.title}</b><hr><p>${info.event.extendedProps.text}</p>`
+      const popoverBottom = `<a class="link" href="#/edit/${info.event.id}">Edit event</a>`
+      const inst = tippy(info.el)
+      inst.setProps({
+        delay: [350, 150],
+        theme: 'translucent',
+        interactive: true,
+        content: popoverMain + popoverBottom,
+        role: 'tooltip',
+        allowHTML: true,
+        placement: 'bottom',
+        zIndex: 99999,
+        appendTo: function () {
+          return document.querySelector('.calendar-view')
+        }
+      })
+    },
     handleSelect: function (selectionInfo) {
       const startDate = Timestamp.fromDate(selectionInfo.start)
       const endDate = Timestamp.fromDate(selectionInfo.end)
@@ -94,6 +116,7 @@ export default {
         notes.forEach((note) => {
           if (note.isEvent && this.inRange(info.start, info.end, note)) {
             events.push({
+              id: note.id,
               title: note.title,
               text: note.text,
               start: note.start.toDate(),
@@ -106,11 +129,6 @@ export default {
       } catch (err) {
         failureCallback(err)
       }
-    },
-    handleEventClick: function (info) {
-      info.jsEvent.preventDefault()
-      // TODO: Docelowo tutaj przekierowujemy do editora, ale go nie ma xD
-      alert(info.event.extendedProps.text)
     }
   }
 }

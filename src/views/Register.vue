@@ -39,7 +39,7 @@
 <script>
 import * as firebase from 'firebase/app'
 import 'firebase/auth'
-import { db } from '../database'
+import { db, Timestamp } from '../database'
 
 export default {
   name: 'Register',
@@ -88,30 +88,31 @@ export default {
     createAccount () {
       firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
         .then(success => {
-          firebase.auth().currentUser.displayName = this.username
+          firebase.auth().currentUser.updateProfile({ displayName: this.displayName })
           const userRef = db.doc(`users/${firebase.auth().currentUser.uid}`)
           userRef.set(
             {
               name: this.username,
               email: this.email,
-              created: firebase.firestore.FieldValue.Timestamp,
+              created: Timestamp.now(),
               photoURL: null
             }
-          ).catch(error => {
+          ).then(_ => {
+            userRef.get()
+              .then(userSnap => {
+                this.$store.dispatch('userSignIn', userSnap.data())
+                this.$router.push('/notes')
+              })
+              .catch(error => {
+                this.signOut()
+                this.errors.push('Something went wrong, please try again later')
+                console.log('Couldn\'t retrieve user data')
+                console.log(error) // TODO: Remove before prod
+              })
+          }).catch(error => {
             console.log('New user created, but writing to db failed')
             console.log(error) // TODO: remove before prod
           })
-          userRef.get()
-            .then(userSnap => {
-              this.$store.dispatch('userSignIn', userSnap.data())
-              this.$router.push('/notes')
-            })
-            .catch(error => {
-              this.signOut()
-              this.errors.push('Something went wrong, please try again later')
-              console.log('Couldn\'t retrieve user data')
-              console.log(error) // TODO: Remove before prod
-            })
         })
         .catch(error => {
           switch (error.code) {
@@ -129,6 +130,11 @@ export default {
             }
             case 'auth/weak-password': {
               this.errors.push('The password is too weak')
+              break
+            }
+            default: {
+              this.errors.push('An unknown error has occured')
+              console.error(error) // TODO: remove before prod
             }
           }
         })

@@ -4,9 +4,8 @@ import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
 import Notes from '../views/Notes.vue'
-import Creator from '@/views/Creator.vue'
-import Viewer from '@/views/Viewer.vue'
-import Calendar from '@/views/Calendar.vue'
+import Editor from '../views/Editor.vue'
+import Calendar from '../views/Calendar.vue'
 
 import * as firebase from 'firebase/app'
 import 'firebase/auth'
@@ -37,21 +36,32 @@ const routes = [
     component: Notes,
     meta: { requiresAuth: true }
   }, {
-    path: '/creator',
-    name: 'Creator',
-    component: Creator,
-    meta: { requiresAuth: true }
-  }, {
-    path: '/viewer/:id',
-    name: 'Viewer',
-    component: Viewer,
-    meta: { requiresAuth: true }
-  }, {
     path: '/calendar',
     name: 'Calendar',
     component: Calendar,
     meta: { requiresAuth: true }
+  }, {
+    path: '/edit/:id',
+    name: 'Editor',
+    component: Editor,
+    meta: { requiresAuth: true }
+  }, {
+    path: '/create',
+    name: 'Creator',
+    component: Editor,
+    meta: { requiresAuth: true }
   }
+  // , {
+  //   path: '/viewer/:id',
+  //   name: 'Viewer',
+  //   component: Viewer,
+  //   meta: { requiresAuth: true }
+  // }, {
+  //   path: '/creator',
+  //   name: 'Creator',
+  //   component: Creator,
+  //   meta: { requiresAuth: true }
+  // }
 ]
 
 const router = new VueRouter({
@@ -66,6 +76,12 @@ router.beforeEach((to, from, next) => {
     next('/login')
   } else {
     next()
+  }
+  if (isAuthenticated && to.path === '/') {
+    next('/notes')
+  }
+  if (!isAuthenticated && to.path === '/') {
+    next('/login')
   }
 })
 

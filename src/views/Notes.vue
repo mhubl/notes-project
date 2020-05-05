@@ -1,8 +1,9 @@
 <template>
-  <div class="notes-page" >
+  <div class="page-wrapper">
     <div class="top-bar">
-      <h1 class="header-title">Your notes</h1>
+      <h1 class="top-header">Your notes</h1>
     </div>
+    <hr class="top-hr">
     <div class="notes">
       <note
         v-for="note in notes"
@@ -38,18 +39,11 @@ export default {
 <style scoped>
   .notes {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(600px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(40%, 45%));
     left: 75px;
     top: 100px;
     position: absolute;
     width: 100%;
+    padding: 50px;
   }
-  /*button {*/
-  /*  width: 8rem;*/
-  /*  height: 5rem;*/
-  /*}*/
-  /*.note-icon {*/
-  /*  float: left;*/
-  /*  width: 1rem;*/
-  /*}*/
 </style>
