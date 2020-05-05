@@ -60,10 +60,9 @@ export default {
               this.$store.dispatch('userSignIn', userSnap.data())
               this.$router.push('/notes')
             })
-            .catch(error => {
+            .catch(_ => {
               this.signOut()
               this.errors.push('Something went wrong, please try again later')
-              console.log(error) // TODO: Remove before prod
             })
         })
         .catch(error => {
@@ -102,17 +101,14 @@ export default {
                 ).then(_ => {
                   this.$store.dispatch('userSignIn', userSnap.data())
                   this.$router.push('/notes')
-                }).catch(error => {
-                  console.log('New user created, but writing to db failed')
-                  console.log(error) // TODO: remove before prod
+                }).catch(_ => {
+                  this.errors.push('Something went wrong, please try again later')
                 })
               }
             })
-            .catch(error => {
+            .catch(_ => {
               this.signOut()
               this.errors.push('Something went wrong, please try again later')
-              console.log('Failed to retrieve user data')
-              console.log(error) // TODO: Remove before prod
             })
         })
         .catch(error => {
@@ -136,7 +132,6 @@ export default {
               this.errors = ['Something went wrong, please try again later']
             }
           }
-          console.log(error) // TODO: Remove before prod
         })
     }
   }

@@ -25,7 +25,6 @@ const store = new Vuex.Store({
   mutations: {
     setError (state, payload) {
       state.error = payload
-      console.log(state.error)
     },
     setUser (state, payload) {
       state.user = payload

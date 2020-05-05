@@ -107,16 +107,13 @@ export default {
           }
           snap.ref.update(data)
             .then(_ => {
-              console.log('Note updated')
               this.$router.push('/notes')
             })
-            .catch(err => {
-              console.error(err)
+            .catch(_ => {
               alert('Something went wrong')
             })
         })
-        .catch(err => {
-          console.error(err)
+        .catch(_ => {
           alert('Something went wrong')
         })
     },
@@ -134,10 +131,8 @@ export default {
         data.allDay = this.allDay
       }
       db.collection('notes').add(data).then(_ => {
-        console.log('Note added successfully')
         this.$router.push('/notes')
-      }).catch(err => {
-        console.error(err)
+      }).catch(_ => {
         alert('Something went wrong')
       })
     },
@@ -163,9 +158,8 @@ export default {
             }
             authors.push(snap.docs[0].ref)
           })
-          .catch(err => {
+          .catch(_ => {
             alert('Something went wrong')
-            console.error(err)
             return false
           })
       }
@@ -183,7 +177,7 @@ export default {
       }
       db.collection('notes').doc(id).get().then(snap => {
         if (!snap.exists) {
-          console.log('Note doesn\'t exist')
+          alert('Note doesn\'t exist')
           this.$router.push('/notes')
           return false
         }

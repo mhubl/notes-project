@@ -103,15 +103,12 @@ export default {
                 this.$store.dispatch('userSignIn', userSnap.data())
                 this.$router.push('/notes')
               })
-              .catch(error => {
+              .catch(_ => {
                 this.signOut()
                 this.errors.push('Something went wrong, please try again later')
-                console.log('Couldn\'t retrieve user data')
-                console.log(error) // TODO: Remove before prod
               })
-          }).catch(error => {
-            console.log('New user created, but writing to db failed')
-            console.log(error) // TODO: remove before prod
+          }).catch(_ => {
+            this.errors.push('Something went wrong, please try again later')
           })
         })
         .catch(error => {
@@ -134,7 +131,6 @@ export default {
             }
             default: {
               this.errors.push('An unknown error has occured')
-              console.error(error) // TODO: remove before prod
             }
           }
         })

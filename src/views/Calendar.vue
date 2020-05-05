@@ -99,7 +99,6 @@ export default {
           start: startDate,
           end: endDate
         }).then(success => {
-          console.log('Event added') // TODO: Remove before prod
           this.$refs.calendar.getApi().refetchEvents()
         })
       }

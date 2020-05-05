@@ -40,7 +40,7 @@ export default {
           if (!userSnap.empty) {
             author.push(userSnap.docs[0].ref)
           } else if (this.shareUser !== '') {
-            console.log('User does not exist')
+            alert('User does not exist')
             return false
           }
           db.collection('notes').add({
@@ -50,7 +50,6 @@ export default {
             created: Timestamp.now(),
             dateInfo: null
           }).then(success => {
-            console.log('Added to db') // TODO: remove before prod
             this.$router.push('/notes')
           })
         })

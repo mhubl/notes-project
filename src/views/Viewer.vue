@@ -42,7 +42,6 @@ export default {
   methods: {
     shareNote: function () {
       if (this.shareUser == null || this.shareUser === '') {
-        console.log('No user selected')
         return false
       }
       db.doc(`notes/${this.$route.params.id}`).get()
@@ -50,7 +49,7 @@ export default {
           db.collection('users').where('email', '==', this.shareUser).get()
             .then(userSnap => {
               if (userSnap.empty) {
-                console.log('User does not exist')
+                alert('User not found')
                 return false
               }
               const authors = noteSnap.data().author
