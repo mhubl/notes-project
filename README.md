@@ -1,5 +1,11 @@
 # notes
 
+## Internet accessible online project URL
+```
+https://notes-ab306.firebaseapp.com/#/login
+```
+
+
 ## Project setup
 ```
 npm install
