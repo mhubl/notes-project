@@ -50,6 +50,7 @@
           </li>
           <li>
             <button class="submit-button" type="submit">Submit</button>
+            <button v-if="isEditor" @click="deleteNote" class="submit-button" type="button">Delete</button>
           </li>
         </ul>
       </div>
@@ -86,16 +87,18 @@ export default {
       }
       return Timestamp.fromMillis(end)
     },
-    updateNote: function (authors) {
-      const id = this.$route.params.id
+    updateNote: function (authors, id = null) {
+      if (id === null) id = this.$route.params.id
       db.collection('notes').doc(id).get()
         .then(snap => {
           const allAuthors = snap.data().author
           authors.forEach(author => {
-            allAuthors.push(author)
+            if (!allAuthors.includes(author)) {
+              allAuthors.push(author)
+            }
           })
           const data = {
-            author: authors,
+            author: allAuthors,
             title: this.title,
             text: this.text,
             isEvent: this.isEvent
@@ -118,8 +121,12 @@ export default {
         })
     },
     createNote: function (authors) {
+      const allAuthors = []
+      authors.forEach(author => {
+        allAuthors.push(author)
+      })
       const data = {
-        author: authors,
+        author: allAuthors,
         title: this.title,
         text: this.text,
         isEvent: this.isEvent,
@@ -130,8 +137,8 @@ export default {
         data.end = this.getEndTs()
         data.allDay = this.allDay
       }
-      db.collection('notes').add(data).then(_ => {
-        this.$router.push('/notes')
+      db.collection('notes').add(data).then(note => {
+        this.updateNote(authors, note.id)
       }).catch(_ => {
         alert('Something went wrong')
       })
@@ -156,7 +163,7 @@ export default {
               alert(`No user with email ${this.shareWith} exists`)
               return false
             }
-            authors.push(snap.docs[0].ref)
+            authors.push(db.collection('users').doc(snap.docs[0].id))
           })
           .catch(_ => {
             alert('Something went wrong')
@@ -194,6 +201,20 @@ export default {
           this.endTime = ('0' + end.getHours()).slice(-2) + ':' + ('0' + end.getMinutes()).slice(-2)
         }
       })
+    },
+    deleteNote: function () {
+      const confirmation = confirm('Do you really want to delete this note? It will not be recoverable.')
+      if (!confirmation) {
+        return false
+      }
+      const id = this.$route.params.id
+      db.collection('notes').doc(id).delete()
+        .then(_ => {
+          this.$router.push('/notes')
+        })
+        .catch(_ => {
+          alert('Something went wrong')
+        })
     }
   },
   data: function () {

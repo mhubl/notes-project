@@ -18,9 +18,6 @@
   </div>
 </template>
 
-<!-- Pomysl jest taki, ze masz na gorze bar z napisem Your Notes i opcjami wyszukiwania/filtrowania/widoku. Pod nim jest scrollowalna strona z lista notatek - nie cala strona (widac po scrollbarze).
-     Jakbym mial rzucic jakims przykladem to przychodzi mi do glowy uklad plikow w google drive -->
-
 <script>
 import note from '../components/Note.vue'
 

@@ -25,9 +25,6 @@ firebase.auth().onAuthStateChanged(user => {
           if (router.currentRoute.path !== '/') {
             router.push('/')
           }
-        },
-        registerAccount: function (uid, userData) {
-          db.collection('users').doc(uid).set(userData)
         }
       },
       firebase: function () {

@@ -104,7 +104,8 @@ export default {
                 this.$router.push('/notes')
               })
               .catch(_ => {
-                this.signOut()
+                this.dispatch('userSignOut')
+                firebase.auth().signOut()
                 this.errors.push('Something went wrong, please try again later')
               })
           }).catch(_ => {

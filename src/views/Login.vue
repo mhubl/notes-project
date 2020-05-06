@@ -8,7 +8,7 @@
     </p>
     <form @submit.prevent="signInEmail" class="auth-form">
       <div class="input-group">
-        <input v-model="email" class="auth-input" type="text" placeholder="Email" label="Email" required>
+        <input v-model="email" class="auth-input" type="email" placeholder="Email" label="Email" required>
       </div>
       <div class="input-group">
         <input v-model="password" class="auth-input" type="password" placeholder="Password" label="Password" required>
@@ -54,14 +54,15 @@ export default {
     signInEmail: function () {
       this.errors = []
       firebase.auth().signInWithEmailAndPassword(this.email, this.password)
-        .then(success => {
+        .then(_ => {
           db.doc(`users/${firebase.auth().currentUser.uid}`).get()
             .then(userSnap => {
               this.$store.dispatch('userSignIn', userSnap.data())
               this.$router.push('/notes')
             })
             .catch(_ => {
-              this.signOut()
+              this.dispatch('userSignOut')
+              firebase.auth().signOut()
               this.errors.push('Something went wrong, please try again later')
             })
         })
@@ -90,24 +91,28 @@ export default {
                 this.$store.dispatch('userSignIn', userSnap.data())
                 this.$router.push('/notes')
               } else {
-                userSnap.ref.set(
-                  {
-                    name: firebase.auth().currentUser.displayName,
-                    email: firebase.auth().currentUser.email,
-                    created: Timestamp.now(),
-                    photoURL: firebase.auth().currentUser.photoURL
-                  }
-                  // TODO: Update snapshot data and then do the .then
-                ).then(_ => {
-                  this.$store.dispatch('userSignIn', userSnap.data())
-                  this.$router.push('/notes')
+                userSnap.ref.set({
+                  name: firebase.auth().currentUser.displayName,
+                  email: firebase.auth().currentUser.email,
+                  created: Timestamp.now(),
+                  photoURL: firebase.auth().currentUser.photoURL
+                }).then(_ => {
+                  userSnap.ref.get().then(updatedSnap => {
+                    this.$store.dispatch('userSignIn', updatedSnap.data())
+                    this.$router.push('/notes')
+                  }).catch(_ => {
+                    this.errors.push('Something went wrong, please try again later')
+                    this.$store.dispatch('userSignOut')
+                  })
                 }).catch(_ => {
                   this.errors.push('Something went wrong, please try again later')
+                  this.$store.dispatch('userSignOut')
                 })
               }
             })
             .catch(_ => {
-              this.signOut()
+              this.dispatch('userSignOut')
+              firebase.auth().signOut()
               this.errors.push('Something went wrong, please try again later')
             })
         })

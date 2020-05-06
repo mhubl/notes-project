@@ -54,6 +54,13 @@ const store = new Vuex.Store({
     userSignOut: function ({ commit }) {
       commit('setUser', null)
       this.dispatch('unbindNotes')
+      if (firebase.auth().currentUser) {
+        firebase.auth().signOut()
+          .catch(err => {
+            const errCode = (err.code == null || err.code === '') ? '00000' : err.code
+            alert('Sign out failed\nError code: ' + errCode)
+          })
+      }
     },
     userRegister: function ({ commit }, payload) {
       firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password)
